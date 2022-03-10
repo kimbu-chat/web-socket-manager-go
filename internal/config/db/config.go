@@ -3,6 +3,7 @@ package db
 import (
 	"os"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -10,7 +11,9 @@ import (
 var connection *gorm.DB
 
 func init() {
-	dsn := os.ExpandEnv("host=%DB_HOST user=%DB_USER password=%DB_PASSWORD dbname=websocketmanager port=5432")
+	godotenv.Load()
+
+	dsn := os.ExpandEnv("host=$DB_HOST user=$DB_USER password=$DB_PASSWORD dbname=websocketmanager port=5439")
 	var err error
 	connection, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

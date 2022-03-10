@@ -1,4 +1,4 @@
 development:
     dialect: postgres
-    datasource: dbname=websocketmanager user=${DB_USER} password=${DB_PASSWORD} sslmode=disable
+    datasource: dbname=websocketmanager user=${DB_USER} password=${DB_PASSWORD} sslmode=disable port=5439
     dir: internal/config/db/migrations
