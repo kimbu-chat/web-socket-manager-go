@@ -1,0 +1,4 @@
+development:
+    dialect: postgres
+    datasource: dbname=golightweb user=${DB_USER} password=${DB_PASSWORD} sslmode=disable
+    dir: internal/config/db/migrations
