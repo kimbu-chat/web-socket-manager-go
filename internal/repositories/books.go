@@ -3,8 +3,8 @@ package repositories
 import (
 	"gorm.io/gorm"
 
-	"github.com/macmaczhl/websocketmanager/internal/config/db"
-	"github.com/macmaczhl/websocketmanager/internal/models"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/config/db"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/models"
 )
 
 type BooksRepository struct {

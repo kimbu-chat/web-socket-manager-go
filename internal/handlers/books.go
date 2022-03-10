@@ -6,9 +6,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/macmaczhl/websocketmanager/internal/forms"
-	"github.com/macmaczhl/websocketmanager/internal/models"
-	"github.com/macmaczhl/websocketmanager/internal/repositories"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/models"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/repositories"
 )
 
 type Books struct {

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/macmaczhl/websocketmanager/internal/config"
+import "github.com/kimbu-chat/web-socket-manager-go/internal/config"
 
 func main() {
 	server := config.InitServer()
