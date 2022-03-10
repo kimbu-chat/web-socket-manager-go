@@ -1,4 +1,4 @@
-package config
+package routes
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,12 +7,11 @@ import (
 )
 
 func InitServer() *gin.Engine {
-	booksHandler := handlers.NewBooks()
+	broadcastDataHandler := handlers.NewBroadcastData()
 
 	router := gin.Default()
 
-	router.GET("/books/:id", booksHandler.Get)
-	router.POST("/books", booksHandler.Create)
+	router.POST("/api/publish-message-to-user-channels", broadcastDataHandler.Send)
 
 	return router
 }

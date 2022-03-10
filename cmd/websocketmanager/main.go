@@ -1,8 +1,14 @@
 package main
 
-import "github.com/kimbu-chat/web-socket-manager-go/internal/config"
+import (
+	"github.com/kimbu-chat/web-socket-manager-go/internal/config"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/config/routes"
+)
 
 func main() {
-	server := config.InitServer()
+	config.InitGRPCCleint()
+	defer config.CloseGRPCConnection()
+
+	server := routes.InitServer()
 	server.Run()
 }
