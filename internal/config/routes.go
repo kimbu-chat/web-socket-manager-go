@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/macmaczhl/golightweb/internal/handlers"
+	"github.com/macmaczhl/websocketmanager/internal/handlers"
 )
 
 func InitServer() *gin.Engine {

@@ -1,4 +1,4 @@
-module github.com/macmaczhl/golightweb
+module github.com/macmaczhl/websocketmanager
 
 go 1.16
 

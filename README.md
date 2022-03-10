@@ -4,12 +4,12 @@
 3. Set database env variables: DB_HOST, DB_USER, DB_PASSWORD
 4. Create database
 ```
-PGPASSWORD=$DB_PASSWORD createdb --username=$DB_USER golightweb
+PGPASSWORD=$DB_PASSWORD createdb --username=$DB_USER websocketmanager
 ```
 
 ## Run
 ```
-go run cmd/golightweb/main.go
+go run cmd/websocketmanager/main.go
 ```
 
 
