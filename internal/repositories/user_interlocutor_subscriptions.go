@@ -23,7 +23,7 @@ func (r *UserInterlocutorSubscriptionsRepository) CreateList(userId int64, inter
 		subscriptions[i] = models.UserInterlocutorSubscription{UserId: userId, InterlocutorId: interlocutorId}
 	}
 
-	return r.db.CreateInBatches(subscriptions, 100).Error
+	return r.db.CreateInBatches(subscriptions, batchSize).Error
 }
 
 func (r *UserInterlocutorSubscriptionsRepository) RemoveList(userId int64, interlocutorIds []int64) error {
