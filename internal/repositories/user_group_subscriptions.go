@@ -23,7 +23,7 @@ func (r *UserGroupSubscriptionsRepository) CreateList(groupId int64, userIds []i
 		subscriptions[i] = models.UserGroupSubscription{UserId: userId, GroupId: groupId}
 	}
 
-	return r.db.CreateInBatches(subscriptions, 100).Error
+	return r.db.CreateInBatches(subscriptions, batchSize).Error
 }
 
 func (r *UserGroupSubscriptionsRepository) RemoveList(groupId int64, userIds []int64) error {
