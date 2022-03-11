@@ -19,8 +19,8 @@ func InitGRPCCleint() {
 	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
+		return
 	}
-	defer conn.Close()
 
 	client = pb.NewCentrifugoApiClient(conn)
 }
