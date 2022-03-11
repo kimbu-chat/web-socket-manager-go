@@ -30,5 +30,5 @@ sql-migrate new MIGRATION_NAME
 ### Run
 
 ```
-sql-migrate up
+export $(cat .env | xargs); sql-migrate up
 ```
