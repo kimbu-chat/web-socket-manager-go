@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-type BroadcastData struct {
-	UserIds []int           `json:"userIds" binding:"required"`
+type PublishMessageToUserGroup struct {
+	GroupId int64           `json:"groupId" binding:"required"`
 	Message json.RawMessage `json:"message" binding:"required"`
 }

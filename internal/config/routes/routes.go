@@ -7,11 +7,10 @@ import (
 )
 
 func InitServer() *gin.Engine {
-	broadcastDataHandler := handlers.NewBroadcastData()
-
 	router := gin.Default()
 
-	router.POST("/api/publish-message-to-user-channels", broadcastDataHandler.Send)
+	router.POST("/api/publish-message-to-user-channels", handlers.NewPublishMessageToUsers().Send)
+	router.POST("/api/publish-message-to-user-group", handlers.NewPublishMessageToUserGroup().Send)
 
 	return router
 }
