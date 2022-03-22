@@ -46,3 +46,18 @@ func (h *UserGroupSubscriptions) RemoveList(c *gin.Context) {
 
 	c.JSON(http.StatusOK, nil)
 }
+
+func (h *UserGroupSubscriptions) Clear(c *gin.Context) {
+	form := forms.ClearUserGroupSubscriptions{}
+	if err := c.ShouldBindJSON(&form); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := h.service.Clear(form.GroupId); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
+}
