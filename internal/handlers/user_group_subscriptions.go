@@ -1,0 +1,33 @@
+package handlers
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/services"
+)
+
+type UserGroupSubscriptions struct {
+	service *services.UserGroupSubscriptions
+}
+
+func NewUserGroupSubscriptions() *UserGroupSubscriptions {
+	return &UserGroupSubscriptions{services.NewUserGroupSubscriptions()}
+}
+
+func (h *UserGroupSubscriptions) Create(c *gin.Context) {
+	form := forms.CreateUserGroupSubscriptions{}
+	if err := c.ShouldBindJSON(&form); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := h.service.Create(form.GroupId, form.UserIds); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
+}
