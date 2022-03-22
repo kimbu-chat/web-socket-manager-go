@@ -15,7 +15,7 @@ func NewUserGroupSubscriptionsRepository() *UserGroupSubscriptionsRepository {
 	return &UserGroupSubscriptionsRepository{db.Connection()}
 }
 
-func (r *UserGroupSubscriptionsRepository) CreateList(groupId int64, userIds []int64) error {
+func (r *UserGroupSubscriptionsRepository) CreateListByGroupId(groupId int64, userIds []int64) error {
 
 	subscriptions := make([]models.UserGroupSubscription, len(userIds))
 

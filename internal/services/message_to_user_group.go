@@ -5,7 +5,7 @@ import (
 )
 
 type MessageToUserGroup struct {
-	db *repositories.UserGroupSubscriptionsRepository
+	repo *repositories.UserGroupSubscriptionsRepository
 }
 
 func NewMessageToUserGroup() *MessageToUserGroup {
@@ -13,7 +13,7 @@ func NewMessageToUserGroup() *MessageToUserGroup {
 }
 
 func (h *MessageToUserGroup) Publish(groupId int64, data []byte) error {
-	userIds, err := h.db.GetUserIdsByGroupId(groupId)
+	userIds, err := h.repo.GetUserIdsByGroupId(groupId)
 
 	if err != nil {
 		return err
