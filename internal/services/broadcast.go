@@ -3,13 +3,12 @@ package services
 import (
 	"context"
 	"fmt"
-	"strconv"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/apiproto"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config"
 )
 
-func BroadcastData(userIds []int, data []byte) error {
+func BroadcastData(userIds []int64, data []byte) error {
 	client := config.GetGRPCClient()
 
 	request := apiproto.BroadcastRequest{
@@ -29,13 +28,13 @@ func BroadcastData(userIds []int, data []byte) error {
 	return nil
 }
 
-func convertIntArrayToString(numbers []int) []string {
+func convertIntArrayToString(numbers []int64) []string {
 	length := len(numbers)
 
 	result := make([]string, length)
 
 	for i := 0; i < length; i++ {
-		result[i] = strconv.Itoa(numbers[i])
+		result[i] = fmt.Sprintf("#%v", fmt.Sprint(numbers[i]))
 	}
 
 	return result

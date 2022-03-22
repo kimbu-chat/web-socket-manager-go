@@ -10,15 +10,15 @@ import (
 	"github.com/kimbu-chat/web-socket-manager-go/internal/services"
 )
 
-type BroadcastData struct {
+type MessageToUsers struct {
 }
 
-func NewBroadcastData() *BroadcastData {
-	return &BroadcastData{}
+func NewMessageToUsers() *MessageToUsers {
+	return &MessageToUsers{}
 }
 
-func (h *BroadcastData) Send(c *gin.Context) {
-	form := forms.BroadcastData{}
+func (h *MessageToUsers) Publish(c *gin.Context) {
+	form := forms.PublishMessageToUsers{}
 	if err := c.ShouldBindJSON(&form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
