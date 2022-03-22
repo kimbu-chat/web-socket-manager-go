@@ -12,6 +12,10 @@ func NewUserGroupSubscriptions() *UserGroupSubscriptions {
 	return &UserGroupSubscriptions{repositories.NewUserGroupSubscriptionsRepository()}
 }
 
-func (h *UserGroupSubscriptions) Create(groupId int64, userIds []int64) error {
+func (h *UserGroupSubscriptions) CreateList(groupId int64, userIds []int64) error {
 	return h.repo.CreateListByGroupId(groupId, userIds)
+}
+
+func (h *UserGroupSubscriptions) RemoveList(groupId int64, userIds []int64) error {
+	return h.repo.RemoveList(groupId, userIds)
 }
