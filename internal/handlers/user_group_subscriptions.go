@@ -17,14 +17,29 @@ func NewUserGroupSubscriptions() *UserGroupSubscriptions {
 	return &UserGroupSubscriptions{services.NewUserGroupSubscriptions()}
 }
 
-func (h *UserGroupSubscriptions) Create(c *gin.Context) {
+func (h *UserGroupSubscriptions) CreateList(c *gin.Context) {
 	form := forms.CreateUserGroupSubscriptions{}
 	if err := c.ShouldBindJSON(&form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := h.service.Create(form.GroupId, form.UserIds); err != nil {
+	if err := h.service.CreateList(form.GroupId, form.UserIds); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
+}
+
+func (h *UserGroupSubscriptions) RemoveList(c *gin.Context) {
+	form := forms.RemoveUserGroupSubscriptions{}
+	if err := c.ShouldBindJSON(&form); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := h.service.RemoveList(form.GroupId, form.UserIds); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
