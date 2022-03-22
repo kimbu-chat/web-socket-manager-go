@@ -10,7 +10,7 @@ import (
 )
 
 type MessageToUserGroup struct {
-	service *services.PublishMessageToUserGroup
+	service *services.MessageToUserGroup
 }
 
 func NewMessageToUserGroup() *MessageToUserGroup {
@@ -24,7 +24,7 @@ func (h *MessageToUserGroup) Publish(c *gin.Context) {
 		return
 	}
 
-	if err := h.service.Send(form.GroupId, form.Message); err != nil {
+	if err := h.service.Publish(form.GroupId, form.Message); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
