@@ -8,7 +8,7 @@ type MessageToUserGroup struct {
 	db *repositories.UserGroupSubscriptionsRepository
 }
 
-func NewPublishMessageToUserGroup() *MessageToUserGroup {
+func NewMessageToUserGroup() *MessageToUserGroup {
 	return &MessageToUserGroup{repositories.NewUserGroupSubscriptionsRepository()}
 }
 

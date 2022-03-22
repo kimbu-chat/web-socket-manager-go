@@ -14,7 +14,7 @@ type MessageToUserGroup struct {
 }
 
 func NewMessageToUserGroup() *MessageToUserGroup {
-	return &MessageToUserGroup{services.NewPublishMessageToUserGroup()}
+	return &MessageToUserGroup{services.NewMessageToUserGroup()}
 }
 
 func (h *MessageToUserGroup) Publish(c *gin.Context) {
