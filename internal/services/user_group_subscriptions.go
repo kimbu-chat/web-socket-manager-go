@@ -19,3 +19,7 @@ func (h *UserGroupSubscriptions) CreateList(groupId int64, userIds []int64) erro
 func (h *UserGroupSubscriptions) RemoveList(groupId int64, userIds []int64) error {
 	return h.repo.RemoveList(groupId, userIds)
 }
+
+func (h *UserGroupSubscriptions) Clear(groupId int64) error {
+	return h.repo.ClearSubscriptionsByGroupId(groupId)
+}

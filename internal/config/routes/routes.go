@@ -14,6 +14,7 @@ func InitServer() *gin.Engine {
 
 	router.POST("/api/create-user-group-subscriptions", handlers.NewUserGroupSubscriptions().CreateList)
 	router.POST("/api/remove-user-group-subscriptions", handlers.NewUserGroupSubscriptions().RemoveList)
+	router.POST("/api/clear-user-group-subscriptions", handlers.NewUserGroupSubscriptions().Clear)
 
 	return router
 }
