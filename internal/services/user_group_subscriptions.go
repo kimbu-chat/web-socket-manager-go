@@ -5,7 +5,7 @@ import (
 )
 
 type UserGroupSubscriptions struct {
-	db *repositories.UserGroupSubscriptionsRepository
+	repo *repositories.UserGroupSubscriptionsRepository
 }
 
 func NewUserGroupSubscriptions() *UserGroupSubscriptions {
@@ -13,5 +13,5 @@ func NewUserGroupSubscriptions() *UserGroupSubscriptions {
 }
 
 func (h *UserGroupSubscriptions) Create(groupId int64, userIds []int64) error {
-	return h.db.CreateList(groupId, userIds)
+	return h.repo.CreateListByGroupId(groupId, userIds)
 }
