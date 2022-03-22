@@ -9,8 +9,8 @@ import (
 func InitServer() *gin.Engine {
 	router := gin.Default()
 
-	router.POST("/api/publish-message-to-user-channels", handlers.NewPublishMessageToUsers().Send)
-	router.POST("/api/publish-message-to-user-group", handlers.NewPublishMessageToUserGroup().Send)
+	router.POST("/api/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
+	router.POST("/api/publish-message-to-user-group", handlers.NewMessageToUserGroup().Publish)
 
 	return router
 }
