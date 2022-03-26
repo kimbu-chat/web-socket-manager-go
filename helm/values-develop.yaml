@@ -1,0 +1,15 @@
+env:
+  AllowedHosts: "*"
+
+  AspNetCore_Environment: Production
+
+  CentrifugoUrl: http://centrifugo.default.svc.cluster.local:9000
+  CentrifugoUserChannel: '#'
+
+  Sentry__Dsn: https://0878d600abb64c13bd1b568a84f2ae49@o116167.ingest.sentry.io/5911541
+  Sentry__IncludeRequestPayload: 'true'
+  Sentry__IncludeActivityData: 'true'
+
+external_secret:
+  enabled: true
+  name: websocket-manager-external-secret # https://github.com/kimbu-chat/k3s#websocket-manager-secret
