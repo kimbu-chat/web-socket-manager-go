@@ -14,7 +14,7 @@ var client pb.CentrifugoApiClient
 var conenction *grpc.ClientConn
 
 func InitGRPCCleint() {
-	addr := os.Getenv("CENTRIFUGO_GRPC_CLIENT_ADDRESS")
+	addr := os.Getenv("CENTRIFUGO_GRPC_ADDRESS")
 
 	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
