@@ -7,8 +7,15 @@ import (
 
 func main() {
 	config.InitGRPCCleint()
-	defer config.CloseGRPCConnection()
+	defer func() {
+		if err := config.CloseGRPCConnection(); err != nil {
+			panic(err)
+		}
+	}()
 
 	server := routes.InitServer()
-	server.Run()
+
+	if err := server.Run(); err != nil {
+		panic(err)
+	}
 }
