@@ -1,11 +1,13 @@
 name: golangci-lint
 on:
   pull_request:
-      - 
+    branches:
+      - 'main'
 permissions:
   contents: read
 jobs:
   golangci:
+    if:  startsWith(github.head_ref, 'releases/')
     name: lint
     runs-on: ubuntu-latest
     steps:
