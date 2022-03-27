@@ -11,10 +11,12 @@ import (
 var connection *gorm.DB
 
 func init() {
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
 
 	dsn := os.ExpandEnv("host=$DB_HOST user=$DB_USER password=$DB_PASSWORD dbname=$DB_NAME port=$DB_PORT")
-	var err error
 	connection, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)

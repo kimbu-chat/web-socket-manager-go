@@ -1,6 +1,6 @@
 ## Setup
 
-1. Install go1.17
+1. Install go1.18
 2. Run postgres instance:
     - Clone services repository <https://github.com/kimbu-chat/services>
     - Run postgres in context of services repository: `docker-compose up -d postgres`
@@ -31,4 +31,20 @@ sql-migrate new MIGRATION_NAME
 
 ```
 export $(cat .env | xargs); sql-migrate up
+```
+
+## Linter
+
+### Install
+
+```
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
+```
+
+Or <https://golangci-lint.run/usage/install/#local-installation>
+
+### Use
+
+```
+golangci-lint run
 ```

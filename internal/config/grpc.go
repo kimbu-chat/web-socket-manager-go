@@ -29,6 +29,6 @@ func GetGRPCClient() pb.CentrifugoApiClient {
 	return client
 }
 
-func CloseGRPCConnection() {
-	conenction.Close()
+func CloseGRPCConnection() error {
+	return conenction.Close()
 }
