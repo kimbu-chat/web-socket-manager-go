@@ -9,6 +9,8 @@ import (
 func InitServer() *gin.Engine {
 	router := gin.Default()
 
+	router.GET("/health", handlers.HealthCheck)
+
 	router.POST("/api/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
 	router.POST("/api/publish-message-to-user-group", handlers.NewMessageToUserGroup().Publish)
 
