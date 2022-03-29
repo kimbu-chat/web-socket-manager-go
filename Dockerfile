@@ -1,4 +1,4 @@
-FROM golang:1.17 AS builder
+FROM golang:1.18 AS builder
 COPY . /app
 WORKDIR /app
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o app cmd/websocketmanager/main.go
