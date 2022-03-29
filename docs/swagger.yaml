@@ -1,0 +1,295 @@
+definitions:
+  forms.ClearUserGroupSubscriptions:
+    properties:
+      groupId:
+        type: integer
+    required:
+    - groupId
+    type: object
+  forms.ClearUserInterlocutorSubscriptions:
+    properties:
+      userId:
+        type: integer
+    required:
+    - userId
+    type: object
+  forms.CreateUserGroupSubscriptions:
+    properties:
+      groupId:
+        type: integer
+      userIds:
+        items:
+          type: integer
+        type: array
+    required:
+    - groupId
+    - userIds
+    type: object
+  forms.CreateUserInterlocutorSubscriptions:
+    properties:
+      interlocutorIds:
+        items:
+          type: integer
+        type: array
+      userId:
+        type: integer
+    required:
+    - interlocutorIds
+    - userId
+    type: object
+  forms.PublishMessageToUserGroup:
+    properties:
+      groupId:
+        type: integer
+      message:
+        type: object
+    required:
+    - groupId
+    - message
+    type: object
+  forms.PublishMessageToUsers:
+    properties:
+      message:
+        type: object
+      userIds:
+        items:
+          type: integer
+        type: array
+    required:
+    - message
+    - userIds
+    type: object
+  forms.RemoveUserGroupSubscriptions:
+    properties:
+      groupId:
+        type: integer
+      userIds:
+        items:
+          type: integer
+        type: array
+    required:
+    - groupId
+    - userIds
+    type: object
+  forms.RemoveUserInterlocutorSubscriptions:
+    properties:
+      interlocutorIds:
+        items:
+          type: integer
+        type: array
+      userId:
+        type: integer
+    required:
+    - interlocutorIds
+    - userId
+    type: object
+  httputil.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+info:
+  contact: {}
+  title: Websocket manager API
+paths:
+  /api/clear-user-group-subscriptions:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User group subscriptions clean
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/forms.ClearUserGroupSubscriptions'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Success
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: ""
+      summary: Clear user group subscriptions
+      tags:
+      - UserGroupSubscriptions
+  /api/clear-user-interlocutor-subscriptions:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User interlocutor subscriptions clean
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/forms.ClearUserInterlocutorSubscriptions'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Success
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: ""
+      summary: Clear all user interlocutor subscriptions for specific user
+      tags:
+      - UserInterlocutorSubscriptions
+  /api/create-user-group-subscriptions:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User group subscriptions creation
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/forms.CreateUserGroupSubscriptions'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: ""
+      summary: Create user group subscriptions
+      tags:
+      - UserGroupSubscriptions
+  /api/create-user-interlocutor-subscriptions:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User interlocutor subscriptions clean
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/forms.CreateUserInterlocutorSubscriptions'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Success
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: ""
+      summary: Clear user interlocutor subscriptions
+      tags:
+      - UserInterlocutorSubscriptions
+  /api/publish-message-to-user-channels:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Message to users
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/forms.PublishMessageToUsers'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Success
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: ""
+      summary: Publish message to users
+  /api/publish-message-to-user-group:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Message to group
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/forms.PublishMessageToUserGroup'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Success
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: ""
+      summary: Publish message to group
+  /api/remove-user-group-subscriptions:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User group subscriptions removing
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/forms.RemoveUserGroupSubscriptions'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Success
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: ""
+      summary: Remove user group subscriptions
+      tags:
+      - UserGroupSubscriptions
+  /api/remove-user-interlocutor-subscriptions:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User interlocutor subscriptions removing
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/forms.RemoveUserInterlocutorSubscriptions'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Success
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: ""
+      summary: Remove set of user interlocutor subscriptions for specific user
+      tags:
+      - UserInterlocutorSubscriptions
+swagger: "2.0"

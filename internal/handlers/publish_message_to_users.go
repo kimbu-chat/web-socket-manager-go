@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/httputil"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/services"
 )
 
@@ -17,18 +18,26 @@ func NewMessageToUsers() *MessageToUsers {
 	return &MessageToUsers{}
 }
 
+// @Summary      Publish message to users
+// @Accept       json
+// @Produce      json
+// @Param        message  body      forms.PublishMessageToUsers  true "Message to users"
+// @Success      204      {object}  nil                               "Success"
+// @Failure      400      {object}  httputil.HTTPError
+// @Failure      500
+// @Router       /api/publish-message-to-user-channels [post]
 func (h *MessageToUsers) Publish(c *gin.Context) {
 	form := forms.PublishMessageToUsers{}
 	if err := c.ShouldBindJSON(&form); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		httputil.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	if err := services.BroadcastData(form.UserIds, form.Message); err != nil {
 		fmt.Printf("Can not broadcast data. Error message: %v\n", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Can not broadcast data"})
+		httputil.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusNoContent, nil)
 }

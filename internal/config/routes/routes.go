@@ -1,8 +1,15 @@
 package routes
 
-import (
-	"github.com/gin-gonic/gin"
+// @title Websocket manager API
 
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/kimbu-chat/web-socket-manager-go/docs"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/handlers"
 )
 
@@ -11,16 +18,24 @@ func InitServer() *gin.Engine {
 
 	router.GET("/health", handlers.HealthCheck)
 
-	router.POST("/api/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
-	router.POST("/api/publish-message-to-user-group", handlers.NewMessageToUserGroup().Publish)
+	router.GET("/swagger", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "/swagger/index.html")
+	})
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.POST("/api/create-user-group-subscriptions", handlers.NewUserGroupSubscriptions().CreateList)
-	router.POST("/api/remove-user-group-subscriptions", handlers.NewUserGroupSubscriptions().RemoveList)
-	router.POST("/api/clear-user-group-subscriptions", handlers.NewUserGroupSubscriptions().Clear)
+	apiGroup := router.Group("/api")
+	{
+		apiGroup.POST("/ublish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
+		apiGroup.POST("/publish-message-to-user-group", handlers.NewMessageToUserGroup().Publish)
 
-	router.POST("/api/create-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().CreateList)
-	router.POST("/api/remove-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().RemoveList)
-	router.POST("/api/clear-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().Clear)
+		apiGroup.POST("/create-user-group-subscriptions", handlers.NewUserGroupSubscriptions().CreateList)
+		apiGroup.POST("/remove-user-group-subscriptions", handlers.NewUserGroupSubscriptions().RemoveList)
+		apiGroup.POST("/clear-user-group-subscriptions", handlers.NewUserGroupSubscriptions().Clear)
+
+		apiGroup.POST("/create-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().CreateList)
+		apiGroup.POST("/remove-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().RemoveList)
+		apiGroup.POST("/clear-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().Clear)
+	}
 
 	return router
 }

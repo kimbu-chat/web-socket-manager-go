@@ -6,5 +6,5 @@ import (
 
 type PublishMessageToUserGroup struct {
 	GroupId int64           `json:"groupId" binding:"required"`
-	Message json.RawMessage `json:"message" binding:"required"`
+	Message json.RawMessage `json:"message" binding:"required" swaggertype:"object"`
 }
