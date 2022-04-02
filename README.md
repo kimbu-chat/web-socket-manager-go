@@ -48,3 +48,15 @@ Or <https://golangci-lint.run/usage/install/#local-installation>
 ```
 golangci-lint run
 ```
+
+## Swagger
+
+After API changes call swag to regenerate documentation
+
+At first you need to download swag tool <https://github.com/swaggo/swag#getting-started>
+
+Regenerate documentation
+
+```
+swag init -g internal/config/routes/routes.go -ot go
+```
