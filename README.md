@@ -1,6 +1,6 @@
 ## Setup
 
-1. Install go1.18
+1. Install go1.18.0
 2. Run postgres instance:
     - Clone services repository <https://github.com/kimbu-chat/services>
     - Run postgres in context of services repository: `docker-compose up -d postgres`
