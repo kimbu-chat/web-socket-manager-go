@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/httputil"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/services"
 )
 
@@ -17,47 +18,74 @@ func NewUserGroupSubscriptions() *UserGroupSubscriptions {
 	return &UserGroupSubscriptions{services.NewUserGroupSubscriptions()}
 }
 
+// @Summary      Create user group subscriptions
+// @Tags         UserGroupSubscriptions
+// @Accept       json
+// @Produce      json
+// @Param        message  body      forms.CreateUserGroupSubscriptions  true "User group subscriptions creation"
+// @Success      201      {object}  nil                               "Success"
+// @Failure      400      {object}  httputil.HTTPError
+// @Failure      500
+// @Router       /api/create-user-group-subscriptions [post]
 func (h *UserGroupSubscriptions) CreateList(c *gin.Context) {
 	form := forms.CreateUserGroupSubscriptions{}
 	if err := c.ShouldBindJSON(&form); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		httputil.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	if err := h.service.CreateList(form.GroupId, form.UserIds); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		httputil.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusCreated, nil)
 }
 
+// @Summary      Remove user group subscriptions
+// @Tags         UserGroupSubscriptions
+// @Accept       json
+// @Produce      json
+// @Param        message  body      forms.RemoveUserGroupSubscriptions  true "User group subscriptions removing"
+// @Success      204      {object}  nil                               "Success"
+// @Failure      400      {object}  httputil.HTTPError
+// @Failure      500
+// @Router       /api/remove-user-group-subscriptions [post]
 func (h *UserGroupSubscriptions) RemoveList(c *gin.Context) {
 	form := forms.RemoveUserGroupSubscriptions{}
 	if err := c.ShouldBindJSON(&form); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		httputil.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	if err := h.service.RemoveList(form.GroupId, form.UserIds); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		httputil.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusNoContent, nil)
 }
 
+// @Summary      Clear user group subscriptions
+// @Tags         UserGroupSubscriptions
+// @Accept       json
+// @Produce      json
+// @Param        message  body      forms.ClearUserGroupSubscriptions  true "User group subscriptions clean"
+// @Success      204      {object}  nil                               "Success"
+// @Failure      400      {object}  httputil.HTTPError
+// @Failure      500
+// @Router       /api/clear-user-group-subscriptions [post]
 func (h *UserGroupSubscriptions) Clear(c *gin.Context) {
 	form := forms.ClearUserGroupSubscriptions{}
 	if err := c.ShouldBindJSON(&form); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		httputil.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	if err := h.service.Clear(form.GroupId); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		httputil.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusNoContent, nil)
 }

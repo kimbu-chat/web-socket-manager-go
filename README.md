@@ -1,6 +1,6 @@
 ## Setup
 
-1. Install go1.18
+1. Install go1.18.0
 2. Run postgres instance:
     - Clone services repository <https://github.com/kimbu-chat/services>
     - Run postgres in context of services repository: `docker-compose up -d postgres`
@@ -47,4 +47,16 @@ Or <https://golangci-lint.run/usage/install/#local-installation>
 
 ```
 golangci-lint run
+```
+
+## Swagger
+
+After API changes call swag to regenerate documentation
+
+At first you need to download swag tool <https://github.com/swaggo/swag#getting-started>
+
+Regenerate documentation
+
+```
+swag init -g internal/config/routes/routes.go -ot go
 ```
