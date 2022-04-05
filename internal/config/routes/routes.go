@@ -25,7 +25,7 @@ func InitServer() *gin.Engine {
 
 	apiGroup := router.Group("/api")
 	{
-		apiGroup.POST("/ublish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
+		apiGroup.POST("/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
 		apiGroup.POST("/publish-message-to-user-group", handlers.NewMessageToUserGroup().Publish)
 
 		apiGroup.POST("/create-user-group-subscriptions", handlers.NewUserGroupSubscriptions().CreateList)
