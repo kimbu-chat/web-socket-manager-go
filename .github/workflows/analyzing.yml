@@ -29,4 +29,3 @@ jobs:
           command: init -g internal/config/routes/routes.go -ot go -o temp/docs
           swagWersion: 1.8.1
           equalToGoPath: temp/docs/docs.go
-          
