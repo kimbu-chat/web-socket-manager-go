@@ -1,0 +1,31 @@
+name: analyzing
+on:
+  pull_request:
+    branches:
+      - 'main'
+permissions:
+  contents: read
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.18.0'
+      - uses: actions/checkout@v3
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3.1.0
+        with:
+          version: v1.45.2
+  check-swagger-documentation:
+    name: Swagger docs check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: go-swag-action
+        uses: yegorrybchenko/go-swag-action@v0.1
+        with:
+          command: init -g internal/config/routes/routes.go -ot go -o temp/docs
+          swagWersion: 1.8.1
+          equalToGoPath: temp/docs/docs.go
