@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
-	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/httputil"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/services"
 )
 
@@ -24,18 +24,18 @@ func NewUserInterlocutorSubscriptions() *UserInterlocutorSubscriptions {
 // @Produce      json
 // @Param        message  body      forms.CreateUserInterlocutorSubscriptions  true "User interlocutor subscriptions clean"
 // @Success      204      {object}  nil                                        "Success"
-// @Failure      400      {object}  httputil.HTTPError
+// @Failure      400      {object}  apierrors.HTTPError
 // @Failure      500
 // @Router       /api/create-user-interlocutor-subscriptions [post]
 func (h *UserInterlocutorSubscriptions) CreateList(c *gin.Context) {
 	form := forms.CreateUserInterlocutorSubscriptions{}
 	if err := c.ShouldBindJSON(&form); err != nil {
-		httputil.NewError(c, http.StatusBadRequest, err)
+		apierrors.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	if err := h.service.CreateList(form.UserId, form.InterlocutorIds); err != nil {
-		httputil.NewError(c, http.StatusBadRequest, err)
+		apierrors.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
@@ -48,18 +48,18 @@ func (h *UserInterlocutorSubscriptions) CreateList(c *gin.Context) {
 // @Produce      json
 // @Param        message  body      forms.RemoveUserInterlocutorSubscriptions  true "User interlocutor subscriptions removing"
 // @Success      204      {object}  nil                                        "Success"
-// @Failure      400      {object}  httputil.HTTPError
+// @Failure      400      {object}  apierrors.HTTPError
 // @Failure      500
 // @Router       /api/remove-user-interlocutor-subscriptions [post]
 func (h *UserInterlocutorSubscriptions) RemoveList(c *gin.Context) {
 	form := forms.RemoveUserInterlocutorSubscriptions{}
 	if err := c.ShouldBindJSON(&form); err != nil {
-		httputil.NewError(c, http.StatusBadRequest, err)
+		apierrors.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	if err := h.service.RemoveList(form.UserId, form.InterlocutorIds); err != nil {
-		httputil.NewError(c, http.StatusBadRequest, err)
+		apierrors.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
@@ -72,18 +72,18 @@ func (h *UserInterlocutorSubscriptions) RemoveList(c *gin.Context) {
 // @Produce      json
 // @Param        message  body      forms.ClearUserInterlocutorSubscriptions  true "User interlocutor subscriptions clean"
 // @Success      204      {object}  nil                                        "Success"
-// @Failure      400      {object}  httputil.HTTPError
+// @Failure      400      {object}  apierrors.HTTPError
 // @Failure      500
 // @Router       /api/clear-user-interlocutor-subscriptions [post]
 func (h *UserInterlocutorSubscriptions) Clear(c *gin.Context) {
 	form := forms.ClearUserInterlocutorSubscriptions{}
 	if err := c.ShouldBindJSON(&form); err != nil {
-		httputil.NewError(c, http.StatusBadRequest, err)
+		apierrors.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	if err := h.service.Clear(form.UserId); err != nil {
-		httputil.NewError(c, http.StatusBadRequest, err)
+		apierrors.NewError(c, http.StatusBadRequest, err)
 		return
 	}
 

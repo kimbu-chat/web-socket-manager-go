@@ -46,7 +46,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.HTTPError"
+                            "$ref": "#/definitions/apierrors.HTTPError"
                         }
                     },
                     "500": {
@@ -85,7 +85,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.HTTPError"
+                            "$ref": "#/definitions/apierrors.HTTPError"
                         }
                     },
                     "500": {
@@ -124,7 +124,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.HTTPError"
+                            "$ref": "#/definitions/apierrors.HTTPError"
                         }
                     },
                     "500": {
@@ -163,7 +163,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.HTTPError"
+                            "$ref": "#/definitions/apierrors.HTTPError"
                         }
                     },
                     "500": {
@@ -199,7 +199,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.HTTPError"
+                            "$ref": "#/definitions/apierrors.HTTPError"
                         }
                     },
                     "500": {
@@ -235,7 +235,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.HTTPError"
+                            "$ref": "#/definitions/apierrors.HTTPError"
                         }
                     },
                     "500": {
@@ -274,7 +274,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.HTTPError"
+                            "$ref": "#/definitions/apierrors.HTTPError"
                         }
                     },
                     "500": {
@@ -313,7 +313,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.HTTPError"
+                            "$ref": "#/definitions/apierrors.HTTPError"
                         }
                     },
                     "500": {
@@ -324,6 +324,19 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "apierrors.HTTPError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "message": {
+                    "type": "string",
+                    "example": "status bad request"
+                }
+            }
+        },
         "forms.ClearUserGroupSubscriptions": {
             "type": "object",
             "required": [
@@ -448,19 +461,6 @@ const docTemplate = `{
                 },
                 "userId": {
                     "type": "integer"
-                }
-            }
-        },
-        "httputil.HTTPError": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer",
-                    "example": 400
-                },
-                "message": {
-                    "type": "string",
-                    "example": "status bad request"
                 }
             }
         }
