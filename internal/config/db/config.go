@@ -37,3 +37,12 @@ func SQLDB() (*sql.DB, *apierrors.Error) {
 
 	return sqlDb, nil
 }
+
+func Close() error {
+	sqlDb, err := Connection().DB()
+	if err != nil {
+		return err
+	}
+
+	return sqlDb.Close()
+}
