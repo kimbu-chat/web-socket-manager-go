@@ -27,7 +27,10 @@ func RegisterTranslations(v *validator.Validate, translator ut.Translator, colle
 		err := v.RegisterTranslation(c.Tag, translator, func(ut ut.Translator) error {
 			return ut.Add(c.Tag, c.ErrorMessage, true)
 		}, func(ut ut.Translator, fe validator.FieldError) string {
-			t, _ := ut.T(c.Tag, params...)
+			t, err := ut.T(c.Tag, params...)
+			if err != nil {
+				panic(err)
+			}
 
 			return t
 		})

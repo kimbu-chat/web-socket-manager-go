@@ -10,12 +10,8 @@ var ErrBadRequest = Error{
 	Error: gin.Error{Err: errors.New("Bad request")},
 }
 
-type ErrorCode uint32
-
 type Error struct {
 	gin.Error
-
-	Code ErrorCode `json:"-"`
 }
 
 type ValidationErrorResponse struct {
