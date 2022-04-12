@@ -1,16 +1,44 @@
 package apierrors
 
-import "github.com/gin-gonic/gin"
+import (
+	"errors"
 
-func NewError(ctx *gin.Context, status int, err error) {
-	er := HTTPError{
-		Code:    status,
-		Message: err.Error(),
-	}
-	ctx.JSON(status, er)
+	"github.com/gin-gonic/gin"
+)
+
+var ErrBadRequest = Error{
+	Error: gin.Error{Err: errors.New("Bad request")},
 }
 
-type HTTPError struct {
-	Code    int    `json:"code" example:"400"`
-	Message string `json:"message" example:"status bad request"`
+type ErrorCode uint32
+
+type Error struct {
+	gin.Error
+
+	Code ErrorCode `json:"-"`
+}
+
+type ValidationErrorResponse struct {
+	Field string `json:"field"`
+	Error string `json:"error"`
+}
+
+type PublicErrorResponse struct {
+	Error string `json:"error"`
+}
+
+type ValidationErrorsResponse struct {
+	Errrors []ValidationErrorResponse `json:"errors"`
+}
+
+func NewPrivate(err error) *Error {
+	return &Error{
+		Error: gin.Error{Err: err, Type: gin.ErrorTypePrivate},
+	}
+}
+
+func NewBind(err error) *Error {
+	return &Error{
+		Error: gin.Error{Err: err, Type: gin.ErrorTypeBind},
+	}
 }

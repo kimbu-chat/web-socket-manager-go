@@ -23,18 +23,18 @@ func NewMessageToUserGroup() *MessageToUserGroup {
 // @Produce      json
 // @Param        message  body      forms.PublishMessageToUserGroup  true "Message to group"
 // @Success      204      {object}  nil                               "Success"
-// @Failure      400      {object}  apierrors.HTTPError
+// @Failure      400      {object}  apierrors.PublicErrorResponse
+// @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/publish-message-to-user-group [post]
 func (h *MessageToUserGroup) Publish(c *gin.Context) {
 	form := forms.PublishMessageToUserGroup{}
-	if err := c.ShouldBindJSON(&form); err != nil {
-		apierrors.NewError(c, http.StatusBadRequest, err)
+	if err := shouldBindErrorJSON(c, &form); err != nil {
 		return
 	}
 
 	if err := h.service.Publish(form.GroupId, form.Message); err != nil {
-		apierrors.NewError(c, http.StatusBadRequest, err)
+		apierrors.ProcessRawAsPrivate(c, err)
 		return
 	}
 

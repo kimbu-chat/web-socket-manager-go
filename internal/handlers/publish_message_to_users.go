@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
@@ -23,19 +23,20 @@ func NewMessageToUsers() *MessageToUsers {
 // @Produce      json
 // @Param        message  body      forms.PublishMessageToUsers  true "Message to users"
 // @Success      204      {object}  nil                               "Success"
-// @Failure      400      {object}  apierrors.HTTPError
+// @Failure      400      {object}  apierrors.PublicErrorResponse
+// @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/publish-message-to-user-channels [post]
 func (h *MessageToUsers) Publish(c *gin.Context) {
 	form := forms.PublishMessageToUsers{}
-	if err := c.ShouldBindJSON(&form); err != nil {
-		apierrors.NewError(c, http.StatusBadRequest, err)
+	if err := shouldBindErrorJSON(c, &form); err != nil {
 		return
 	}
 
 	if err := services.BroadcastData(form.UserIds, form.Message); err != nil {
-		fmt.Printf("Can not broadcast data. Error message: %v\n", err)
-		apierrors.NewError(c, http.StatusBadRequest, err)
+		apiErr := apierrors.NewPrivate(err)
+		apiErr.SetMeta(logrus.Fields{"context": "Can not broadcast data"})
+		apierrors.ProcessError(c, apiErr)
 		return
 	}
 

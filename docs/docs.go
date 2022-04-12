@@ -46,7 +46,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apierrors.HTTPError"
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
                         }
                     },
                     "500": {
@@ -85,7 +91,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apierrors.HTTPError"
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
                         }
                     },
                     "500": {
@@ -124,7 +136,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apierrors.HTTPError"
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
                         }
                     },
                     "500": {
@@ -163,7 +181,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apierrors.HTTPError"
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
                         }
                     },
                     "500": {
@@ -199,7 +223,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apierrors.HTTPError"
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
                         }
                     },
                     "500": {
@@ -235,7 +265,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apierrors.HTTPError"
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
                         }
                     },
                     "500": {
@@ -274,7 +310,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apierrors.HTTPError"
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
                         }
                     },
                     "500": {
@@ -313,7 +355,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apierrors.HTTPError"
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
                         }
                     },
                     "500": {
@@ -324,16 +372,33 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "apierrors.HTTPError": {
+        "apierrors.PublicErrorResponse": {
             "type": "object",
             "properties": {
-                "code": {
-                    "type": "integer",
-                    "example": 400
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "apierrors.ValidationErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
                 },
-                "message": {
-                    "type": "string",
-                    "example": "status bad request"
+                "field": {
+                    "type": "string"
+                }
+            }
+        },
+        "apierrors.ValidationErrorsResponse": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apierrors.ValidationErrorResponse"
+                    }
                 }
             }
         },

@@ -1,21 +1,20 @@
 package main
 
 import (
+	"time"
+
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config/routes"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/server"
 )
 
 func main() {
-	config.InitGRPCCleint()
+	config.Init()
 	defer func() {
-		if err := config.CloseGRPCConnection(); err != nil {
-			panic(err)
-		}
+		config.Close()
 	}()
 
-	server := routes.InitServer()
-
-	if err := server.Run(); err != nil {
-		panic(err)
-	}
+	router := routes.InitServer()
+	//TODO: move address and timeout to config
+	server.Run(":8080", router, 20*time.Second)
 }
