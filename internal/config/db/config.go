@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -29,13 +28,8 @@ func Connection() *gorm.DB {
 	return connection
 }
 
-func SQLDB() (*sql.DB, *apierrors.Error) {
-	sqlDb, err := Connection().DB()
-	if err != nil {
-		return sqlDb, apierrors.NewPrivate(err)
-	}
-
-	return sqlDb, nil
+func SQLDB() (*sql.DB, error) {
+	return Connection().DB()
 }
 
 func Close() error {

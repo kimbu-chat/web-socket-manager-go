@@ -10,13 +10,13 @@ import (
 )
 
 func HealthCheck(c *gin.Context) {
-	sqlDB, apiErr := db.SQLDB()
-	if apiErr != nil {
-		apierrors.ProcessError(c, apiErr)
+	sqlDB, err := db.SQLDB()
+	if err != nil {
+		apierrors.ProcessRawAsPrivate(c, err)
 		return
 	}
 
-	err := sqlDB.Ping()
+	err = sqlDB.Ping()
 	if err != nil {
 		apierrors.ProcessRawAsPrivate(c, err)
 		return
