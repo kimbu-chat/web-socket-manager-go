@@ -22,7 +22,7 @@ func Run(address string, handler http.Handler, timeout time.Duration) {
 		}
 	}()
 
-	stop := make(chan os.Signal)
+	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
 
 	<-stop

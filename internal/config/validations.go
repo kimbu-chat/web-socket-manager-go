@@ -54,5 +54,7 @@ func initTranslations(v *validator.Validate, translator ut.Translator) {
 		},
 	}
 
-	apierrors.RegisterTranslations(v, translator, translations)
+	if err := apierrors.RegisterTranslations(v, translator, translations); err != nil {
+		panic(err)
+	}
 }

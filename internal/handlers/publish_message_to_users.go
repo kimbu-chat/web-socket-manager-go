@@ -35,7 +35,7 @@ func (h *MessageToUsers) Publish(c *gin.Context) {
 
 	if err := services.BroadcastData(form.UserIds, form.Message); err != nil {
 		apiErr := apierrors.NewPrivate(err)
-		apiErr.SetMeta(logrus.Fields{"context": "Can not broadcast data"})
+		_ = apiErr.SetMeta(logrus.Fields{"context": "Can not broadcast data"})
 		apierrors.ProcessError(c, apiErr)
 		return
 	}
