@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -25,4 +26,17 @@ func init() {
 
 func Connection() *gorm.DB {
 	return connection
+}
+
+func SQLDB() (*sql.DB, error) {
+	return Connection().DB()
+}
+
+func Close() error {
+	sqlDb, err := Connection().DB()
+	if err != nil {
+		return err
+	}
+
+	return sqlDb.Close()
 }

@@ -6,18 +6,19 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config/db"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
 )
 
 func HealthCheck(c *gin.Context) {
-	sqlDB, err := db.Connection().DB()
+	sqlDB, err := db.SQLDB()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		apierrors.ProcessRawAsPrivate(c, err)
 		return
 	}
 
 	err = sqlDB.Ping()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		apierrors.ProcessRawAsPrivate(c, err)
 		return
 	}
 

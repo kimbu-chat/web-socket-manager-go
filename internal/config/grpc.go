@@ -13,22 +13,23 @@ import (
 var client pb.CentrifugoApiClient
 var conenction *grpc.ClientConn
 
-func InitGRPCCleint() {
+func initGRPCCleint() {
 	addr := os.Getenv("CENTRIFUGO_GRPC_ADDRESS")
 
-	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	var err error
+	conenction, err = grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 		return
 	}
 
-	client = pb.NewCentrifugoApiClient(conn)
+	client = pb.NewCentrifugoApiClient(conenction)
 }
 
 func GetGRPCClient() pb.CentrifugoApiClient {
 	return client
 }
 
-func CloseGRPCConnection() error {
+func closeGRPCConnection() error {
 	return conenction.Close()
 }
