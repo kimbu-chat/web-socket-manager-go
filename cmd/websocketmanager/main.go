@@ -16,5 +16,6 @@ func main() {
 
 	router := routes.InitServer()
 	//TODO: move address and timeout to config
+	// https://github.com/kimbu-chat/web-socket-manager-go/issues/27
 	server.Run(":8080", router, 20*time.Second)
 }
