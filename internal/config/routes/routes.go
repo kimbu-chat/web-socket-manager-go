@@ -6,11 +6,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
-
+	"github.com/gofiber/fiber/v2"
 	_ "github.com/kimbu-chat/web-socket-manager-go/docs"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/handlers"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func InitServer() *gin.Engine {
@@ -38,4 +38,12 @@ func InitServer() *gin.Engine {
 	}
 
 	return router
+}
+
+func InitApp() *fiber.App {
+	app := fiber.New()
+
+	app.Get("/health", func(c *fiber.Ctx) error { return nil })
+
+	return app
 }
