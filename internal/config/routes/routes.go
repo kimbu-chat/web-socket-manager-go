@@ -5,11 +5,10 @@ package routes
 import (
 	"net/http"
 
+	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 
 	_ "github.com/kimbu-chat/web-socket-manager-go/docs"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/handlers"
@@ -19,14 +18,8 @@ import (
 func InitServer() *gin.Engine {
 	router := gin.Default()
 
-	router.GET("/swagger", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/swagger/index.html")
-	})
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
 	apiGroup := router.Group("/api")
 	{
-		apiGroup.POST("/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
 		apiGroup.POST("/publish-message-to-user-group", handlers.NewMessageToUserGroup().Publish)
 
 		apiGroup.POST("/create-user-group-subscriptions", handlers.NewUserGroupSubscriptions().CreateList)
@@ -53,9 +46,12 @@ func InitApp() *fiber.App {
 
 	app.Get("/health", handlers.HealthCheck)
 
+	app.Get("swagger", func(c *fiber.Ctx) error { return c.Redirect("/swagger/index.html", http.StatusMovedPermanently) })
+	app.Get("swagger/*", swagger.HandlerDefault)
+
 	apiGroup := app.Group("/api")
 	{
-		apiGroup.Post("/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish2)
+		apiGroup.Post("/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
 	}
 
 	return app
