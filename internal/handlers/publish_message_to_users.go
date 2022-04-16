@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
@@ -35,10 +35,25 @@ func (h *MessageToUsers) Publish(c *gin.Context) {
 
 	if err := services.BroadcastData(form.UserIds, form.Message); err != nil {
 		apiErr := apierrors.NewPrivate(err)
-		_ = apiErr.SetMeta(logrus.Fields{"context": "Can not broadcast data"})
+		// _ = apiErr.SetMeta(logrus.Fields{"context": "Can not broadcast data"})
 		apierrors.ProcessError(c, apiErr)
 		return
 	}
 
 	c.JSON(http.StatusNoContent, nil)
+}
+
+func (h *MessageToUsers) Publish2(c *fiber.Ctx) error {
+	form := forms.PublishMessageToUsers{}
+
+	if err := apierrors.ParseValidate(c, &form); err != nil {
+		return err
+	}
+
+	if err := services.BroadcastData(form.UserIds, form.Message); err != nil {
+		apiErr := apierrors.NewPrivate(err)
+		return apiErr.SetFields("context", "Can not broadcast data")
+	}
+
+	return c.SendStatus(fiber.StatusNoContent)
 }

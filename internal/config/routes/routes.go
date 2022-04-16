@@ -7,16 +7,17 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
-	_ "github.com/kimbu-chat/web-socket-manager-go/docs"
-	"github.com/kimbu-chat/web-socket-manager-go/internal/handlers"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/kimbu-chat/web-socket-manager-go/docs"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/handlers"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
 )
 
 func InitServer() *gin.Engine {
 	router := gin.Default()
-
-	router.GET("/health", handlers.HealthCheck)
 
 	router.GET("/swagger", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/swagger/index.html")
@@ -41,9 +42,21 @@ func InitServer() *gin.Engine {
 }
 
 func InitApp() *fiber.App {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ErrorHandler: apierrors.ErrorHandler,
+	})
 
-	app.Get("/health", func(c *fiber.Ctx) error { return nil })
+	recoverMiddleware := recover.New(
+		recover.Config{EnableStackTrace: true},
+	)
+	app.Use(recoverMiddleware)
+
+	app.Get("/health", handlers.HealthCheck)
+
+	apiGroup := app.Group("/api")
+	{
+		apiGroup.Post("/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish2)
+	}
 
 	return app
 }
