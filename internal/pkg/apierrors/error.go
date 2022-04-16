@@ -15,6 +15,14 @@ const (
 	ErrorTypeValidation
 )
 
+var defaultValadator *validator.Validate
+var defaultTranslator ut.Translator
+
+func Init(translator ut.Translator, validator *validator.Validate) {
+	defaultTranslator = translator
+	defaultValadator = validator
+}
+
 var ErrBadRequest = Error{
 	Type: ErrorTypePublic,
 	Err:  errors.New("Bad request"),
@@ -39,11 +47,6 @@ func (e *Error) SetFields(key string, value any) *Error {
 	return e
 }
 
-func Init(translator ut.Translator, validator *validator.Validate) {
-	defaultTranslator = translator
-	defaultValadator = validator
-}
-
 type ValidationErrorResponse struct {
 	Field string `json:"field"`
 	Error string `json:"error"`
@@ -61,11 +64,5 @@ func NewPrivate(err error) *Error {
 	return &Error{
 		Type: ErrorTypePrivate,
 		Err:  err,
-	}
-}
-
-func NewBind(err error) *Error {
-	return &Error{
-		// Error: gin.Error{Err: err, Type: gin.ErrorTypeBind},
 	}
 }

@@ -26,7 +26,6 @@ func NewMessageToUsers() *MessageToUsers {
 // @Router       /api/publish-message-to-user-channels [post]
 func (h *MessageToUsers) Publish(c *fiber.Ctx) error {
 	form := forms.PublishMessageToUsers{}
-
 	if err := apierrors.ParseValidate(c, &form); err != nil {
 		return err
 	}

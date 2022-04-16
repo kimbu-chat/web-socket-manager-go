@@ -11,8 +11,6 @@ type Collection struct {
 	ErrorMessageParams []string
 }
 
-var defaultTranslator ut.Translator
-
 func RegisterTranslations(v *validator.Validate, translator ut.Translator, collection []Collection) error {
 	for _, c := range collection {
 		params := c.ErrorMessageParams

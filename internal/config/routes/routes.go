@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
-	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 
@@ -14,25 +13,6 @@ import (
 	"github.com/kimbu-chat/web-socket-manager-go/internal/handlers"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
 )
-
-func InitServer() *gin.Engine {
-	router := gin.Default()
-
-	apiGroup := router.Group("/api")
-	{
-		apiGroup.POST("/publish-message-to-user-group", handlers.NewMessageToUserGroup().Publish)
-
-		apiGroup.POST("/create-user-group-subscriptions", handlers.NewUserGroupSubscriptions().CreateList)
-		apiGroup.POST("/remove-user-group-subscriptions", handlers.NewUserGroupSubscriptions().RemoveList)
-		apiGroup.POST("/clear-user-group-subscriptions", handlers.NewUserGroupSubscriptions().Clear)
-
-		apiGroup.POST("/create-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().CreateList)
-		apiGroup.POST("/remove-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().RemoveList)
-		apiGroup.POST("/clear-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().Clear)
-	}
-
-	return router
-}
 
 func InitApp() *fiber.App {
 	app := fiber.New(fiber.Config{
@@ -52,6 +32,15 @@ func InitApp() *fiber.App {
 	apiGroup := app.Group("/api")
 	{
 		apiGroup.Post("/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
+		apiGroup.Post("/publish-message-to-user-group", handlers.NewMessageToUserGroup().Publish)
+
+		apiGroup.Post("/create-user-group-subscriptions", handlers.NewUserGroupSubscriptions().CreateList)
+		apiGroup.Post("/remove-user-group-subscriptions", handlers.NewUserGroupSubscriptions().RemoveList)
+		apiGroup.Post("/clear-user-group-subscriptions", handlers.NewUserGroupSubscriptions().Clear)
+
+		apiGroup.Post("/create-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().CreateList)
+		apiGroup.Post("/remove-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().RemoveList)
+		apiGroup.Post("/clear-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().Clear)
 	}
 
 	return app
