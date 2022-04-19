@@ -10,18 +10,13 @@ import (
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config/db"
 )
 
-var Cfg cfg
-
-type cfg struct {
-}
-
 const DefaultSentryFlushTimeout = 5
 
-func (c *cfg) SentryDNS() string {
+func SentryDNS() string {
 	return os.Getenv("SENTRY_DNS")
 }
 
-func (c *cfg) SentryFlushTimeout() time.Duration {
+func SentryFlushTimeout() time.Duration {
 	tStr, ok := os.LookupEnv("SENTRY_FLUSH_TIMEOUT")
 	if !ok {
 		return DefaultSentryFlushTimeout * time.Second
@@ -34,23 +29,23 @@ func (c *cfg) SentryFlushTimeout() time.Duration {
 	return time.Duration(seconds) * time.Second
 }
 
-func (c *cfg) DbHost() string {
+func DbHost() string {
 	return os.Getenv("DB_HOST")
 }
 
-func (c *cfg) DbUser() string {
+func DbUser() string {
 	return os.Getenv("DB_USER")
 }
 
-func (c *cfg) DbPassword() string {
+func DbPassword() string {
 	return os.Getenv("DB_PASSWORD")
 }
 
-func (c *cfg) DbName() string {
+func DbName() string {
 	return os.Getenv("DB_NAME")
 }
 
-func (c *cfg) DbPort() string {
+func DbPort() string {
 	return os.Getenv("DB_PORT")
 }
 
@@ -58,11 +53,11 @@ func Init() {
 	loadCfg()
 	initSentry()
 	db.InitConnection(db.DbCfg{
-		Host:     Cfg.DbHost(),
-		User:     Cfg.DbUser(),
-		Password: Cfg.DbPassword(),
-		Name:     Cfg.DbName(),
-		Port:     Cfg.DbPort(),
+		Host:     DbHost(),
+		User:     DbUser(),
+		Password: DbPassword(),
+		Name:     DbName(),
+		Port:     DbPort(),
 	})
 	initGRPCCleint()
 	initValidations()
@@ -84,6 +79,4 @@ func loadCfg() {
 	if err != nil {
 		panic(err)
 	}
-
-	Cfg = cfg{}
 }

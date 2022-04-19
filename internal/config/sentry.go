@@ -8,7 +8,7 @@ import (
 
 func initSentry() {
 	err := sentry.Init(sentry.ClientOptions{
-		Dsn:              Cfg.SentryDNS(),
+		Dsn:              SentryDNS(),
 		Release:          "0.1",
 		AttachStacktrace: true,
 	})
@@ -19,5 +19,5 @@ func initSentry() {
 }
 
 func flushSentry() {
-	sentry.Flush(Cfg.SentryFlushTimeout())
+	sentry.Flush(SentryFlushTimeout())
 }

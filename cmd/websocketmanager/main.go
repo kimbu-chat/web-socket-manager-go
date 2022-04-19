@@ -14,7 +14,7 @@ func main() {
 		if err != nil {
 			hub := sentry.CurrentHub().Clone()
 			hub.Recover(err)
-			hub.Flush(config.Cfg.SentryFlushTimeout())
+			hub.Flush(config.SentryFlushTimeout())
 			panic(err)
 		}
 	}()
