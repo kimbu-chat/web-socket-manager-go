@@ -3,7 +3,9 @@ package apierrors
 import (
 	"net/http"
 
+	"github.com/getsentry/sentry-go"
 	"github.com/go-playground/validator/v10"
+	"github.com/gofiber/contrib/fibersentry"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
 )
@@ -42,16 +44,34 @@ func processError(c *fiber.Ctx, err *Error) error {
 }
 
 func processPrivate(c *fiber.Ctx, err *Error) error {
+	sentryHub := fibersentry.GetHubFromContext(c)
+
 	if err.Fields != nil {
+		sentryHub.ConfigureScope(func(scope *sentry.Scope) {
+			for k, v := range err.Fields {
+				scope.SetTag(k, v.(string))
+			}
+		})
 		logrus.WithFields(err.Fields).Error(err.Err)
 	} else {
 		logrus.Error(err.Err)
 	}
 
+	sentryHub.ConfigureScope(func(scope *sentry.Scope) {
+		scope.SetTag("errType", "ErrorTypePrivate")
+	})
+	sentryHub.Recover(err.Err)
+
 	return c.SendStatus(http.StatusInternalServerError)
 }
 
 func processPublic(c *fiber.Ctx, err *Error) error {
+	sentryHub := fibersentry.GetHubFromContext(c)
+	sentryHub.ConfigureScope(func(scope *sentry.Scope) {
+		scope.SetTag("errType", "ErrorTypePublic")
+	})
+	sentryHub.CaptureMessage(err.Error())
+
 	return c.Status(http.StatusBadRequest).JSON(PublicErrorResponse{err.Err.Error()})
 }
 

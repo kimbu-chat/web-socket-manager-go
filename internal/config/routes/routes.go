@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
+	"github.com/gofiber/contrib/fibersentry"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 
@@ -19,10 +20,11 @@ func InitApp() *fiber.App {
 		ErrorHandler: apierrors.ErrorHandler,
 	})
 
+	sentryMiddleware := fibersentry.New(fibersentry.Config{Repanic: true})
 	recoverMiddleware := recover.New(
 		recover.Config{EnableStackTrace: true},
 	)
-	app.Use(recoverMiddleware)
+	app.Use(recoverMiddleware, sentryMiddleware)
 
 	app.Get("/health", handlers.HealthCheck)
 

@@ -2,22 +2,26 @@ package db
 
 import (
 	"database/sql"
-	"os"
+	"fmt"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var connection *gorm.DB
 
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+type DbCfg struct {
+	Host     string
+	User     string
+	Password string
+	Name     string
+	Port     string
+}
 
-	dsn := os.ExpandEnv("host=$DB_HOST user=$DB_USER password=$DB_PASSWORD dbname=$DB_NAME port=$DB_PORT")
+func InitConnection(cfg DbCfg) {
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s", cfg.Host, cfg.User, cfg.Password, cfg.Name, cfg.Port)
+
+	var err error
 	connection, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
