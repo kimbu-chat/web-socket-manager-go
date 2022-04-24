@@ -1,7 +1,7 @@
 package apierrors
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
@@ -63,6 +63,6 @@ type ValidationErrorsResponse struct {
 func NewPrivate(err error) *Error {
 	return &Error{
 		Type: ErrorTypePrivate,
-		Err:  err,
+		Err:  errors.Wrap(err, "ErrorTypePrivate initialization"),
 	}
 }
