@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
@@ -28,18 +26,17 @@ func NewUserInterlocutorSubscriptions() *UserInterlocutorSubscriptions {
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/create-user-interlocutor-subscriptions [post]
-func (h *UserInterlocutorSubscriptions) CreateList(c *gin.Context) {
+func (h *UserInterlocutorSubscriptions) CreateList(c *fiber.Ctx) error {
 	form := forms.CreateUserInterlocutorSubscriptions{}
-	if err := shouldBindErrorJSON(c, &form); err != nil {
-		return
+	if err := apierrors.ParseValidate(c, &form); err != nil {
+		return err
 	}
 
 	if err := h.service.CreateList(form.UserId, form.InterlocutorIds); err != nil {
-		apierrors.ProcessRawAsPrivate(c, err)
-		return
+		return apierrors.NewPrivate(err)
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	return c.SendStatus(fiber.StatusNoContent)
 }
 
 // @Summary      Remove set of user interlocutor subscriptions for specific user
@@ -52,18 +49,17 @@ func (h *UserInterlocutorSubscriptions) CreateList(c *gin.Context) {
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/remove-user-interlocutor-subscriptions [post]
-func (h *UserInterlocutorSubscriptions) RemoveList(c *gin.Context) {
+func (h *UserInterlocutorSubscriptions) RemoveList(c *fiber.Ctx) error {
 	form := forms.RemoveUserInterlocutorSubscriptions{}
-	if err := shouldBindErrorJSON(c, &form); err != nil {
-		return
+	if err := apierrors.ParseValidate(c, &form); err != nil {
+		return err
 	}
 
 	if err := h.service.RemoveList(form.UserId, form.InterlocutorIds); err != nil {
-		apierrors.ProcessRawAsPrivate(c, err)
-		return
+		return apierrors.NewPrivate(err)
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	return c.SendStatus(fiber.StatusNoContent)
 }
 
 // @Summary      Clear all user interlocutor subscriptions for specific user
@@ -76,16 +72,15 @@ func (h *UserInterlocutorSubscriptions) RemoveList(c *gin.Context) {
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/clear-user-interlocutor-subscriptions [post]
-func (h *UserInterlocutorSubscriptions) Clear(c *gin.Context) {
+func (h *UserInterlocutorSubscriptions) Clear(c *fiber.Ctx) error {
 	form := forms.ClearUserInterlocutorSubscriptions{}
-	if err := shouldBindErrorJSON(c, &form); err != nil {
-		return
+	if err := apierrors.ParseValidate(c, &form); err != nil {
+		return err
 	}
 
 	if err := h.service.Clear(form.UserId); err != nil {
-		apierrors.ProcessRawAsPrivate(c, err)
-		return
+		return apierrors.NewPrivate(err)
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	return c.SendStatus(fiber.StatusNoContent)
 }

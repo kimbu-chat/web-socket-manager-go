@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
@@ -28,18 +26,17 @@ func NewUserGroupSubscriptions() *UserGroupSubscriptions {
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/create-user-group-subscriptions [post]
-func (h *UserGroupSubscriptions) CreateList(c *gin.Context) {
+func (h *UserGroupSubscriptions) CreateList(c *fiber.Ctx) error {
 	form := forms.CreateUserGroupSubscriptions{}
-	if err := shouldBindErrorJSON(c, &form); err != nil {
-		return
+	if err := apierrors.ParseValidate(c, &form); err != nil {
+		return err
 	}
 
 	if err := h.service.CreateList(form.GroupId, form.UserIds); err != nil {
-		apierrors.ProcessRawAsPrivate(c, err)
-		return
+		return apierrors.NewPrivate(err)
 	}
 
-	c.JSON(http.StatusCreated, nil)
+	return c.SendStatus(fiber.StatusNoContent)
 }
 
 // @Summary      Remove user group subscriptions
@@ -52,18 +49,17 @@ func (h *UserGroupSubscriptions) CreateList(c *gin.Context) {
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/remove-user-group-subscriptions [post]
-func (h *UserGroupSubscriptions) RemoveList(c *gin.Context) {
+func (h *UserGroupSubscriptions) RemoveList(c *fiber.Ctx) error {
 	form := forms.RemoveUserGroupSubscriptions{}
-	if err := shouldBindErrorJSON(c, &form); err != nil {
-		return
+	if err := apierrors.ParseValidate(c, &form); err != nil {
+		return err
 	}
 
 	if err := h.service.RemoveList(form.GroupId, form.UserIds); err != nil {
-		apierrors.ProcessRawAsPrivate(c, err)
-		return
+		return apierrors.NewPrivate(err)
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	return c.SendStatus(fiber.StatusNoContent)
 }
 
 // @Summary      Clear user group subscriptions
@@ -76,16 +72,15 @@ func (h *UserGroupSubscriptions) RemoveList(c *gin.Context) {
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/clear-user-group-subscriptions [post]
-func (h *UserGroupSubscriptions) Clear(c *gin.Context) {
+func (h *UserGroupSubscriptions) Clear(c *fiber.Ctx) error {
 	form := forms.ClearUserGroupSubscriptions{}
-	if err := shouldBindErrorJSON(c, &form); err != nil {
-		return
+	if err := apierrors.ParseValidate(c, &form); err != nil {
+		return err
 	}
 
 	if err := h.service.Clear(form.GroupId); err != nil {
-		apierrors.ProcessRawAsPrivate(c, err)
-		return
+		return apierrors.NewPrivate(err)
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	return c.SendStatus(fiber.StatusNoContent)
 }

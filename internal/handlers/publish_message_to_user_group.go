@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/forms"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
@@ -27,16 +25,15 @@ func NewMessageToUserGroup() *MessageToUserGroup {
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/publish-message-to-user-group [post]
-func (h *MessageToUserGroup) Publish(c *gin.Context) {
+func (h *MessageToUserGroup) Publish(c *fiber.Ctx) error {
 	form := forms.PublishMessageToUserGroup{}
-	if err := shouldBindErrorJSON(c, &form); err != nil {
-		return
+	if err := apierrors.ParseValidate(c, &form); err != nil {
+		return err
 	}
 
 	if err := h.service.Publish(form.GroupId, form.Message); err != nil {
-		apierrors.ProcessRawAsPrivate(c, err)
-		return
+		return apierrors.NewPrivate(err)
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	return c.SendStatus(fiber.StatusNoContent)
 }

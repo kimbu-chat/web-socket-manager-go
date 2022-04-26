@@ -5,6 +5,6 @@ import (
 )
 
 type PublishMessageToUserGroup struct {
-	GroupId int64           `json:"groupId" binding:"required"`
-	Message json.RawMessage `json:"message" binding:"required" swaggertype:"object"`
+	GroupId int64           `json:"groupId" validate:"required"`
+	Message json.RawMessage `json:"message" validate:"required" swaggertype:"object"`
 }

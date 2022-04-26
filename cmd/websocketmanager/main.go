@@ -1,7 +1,7 @@
 package main
 
 import (
-	"time"
+	"github.com/getsentry/sentry-go"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config/routes"
@@ -9,13 +9,22 @@ import (
 )
 
 func main() {
-	config.Init()
 	defer func() {
-		config.Close()
+		err := recover()
+		if err != nil {
+			hub := sentry.CurrentHub().Clone()
+			hub.Recover(err)
+			hub.Flush(config.SentryFlushTimeout())
+			panic(err)
+		}
 	}()
 
-	router := routes.InitServer()
-	//TODO: move address and timeout to config
+	config.Init()
+	defer config.Close()
+
+	app := routes.InitApp()
+
+	//TODO: move address to config
 	// https://github.com/kimbu-chat/web-socket-manager-go/issues/27
-	server.Run(":8080", router, 20*time.Second)
+	server.Run(":8080", app)
 }

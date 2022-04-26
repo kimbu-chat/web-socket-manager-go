@@ -1,23 +1,17 @@
 package server
 
 import (
-	"context"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func Run(address string, handler http.Handler, timeout time.Duration) {
-	srv := &http.Server{
-		Addr:    address,
-		Handler: handler,
-	}
-
+func Run(address string, app *fiber.App) {
 	go func() {
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := app.Listen(address); err != nil {
 			panic(err)
 		}
 	}()
@@ -28,10 +22,7 @@ func Run(address string, handler http.Handler, timeout time.Duration) {
 	<-stop
 	log.Println("Shutting down server...")
 
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-
-	if err := srv.Shutdown(ctx); err != nil {
+	if err := app.Shutdown(); err != nil {
 		log.Fatal("Server forced to shutdown:", err)
 	}
 

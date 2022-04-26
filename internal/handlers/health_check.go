@@ -1,26 +1,22 @@
 package handlers
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config/db"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
 )
 
-func HealthCheck(c *gin.Context) {
+func HealthCheck(c *fiber.Ctx) error {
 	sqlDB, err := db.SQLDB()
 	if err != nil {
-		apierrors.ProcessRawAsPrivate(c, err)
-		return
+		return apierrors.NewPrivate(err)
 	}
 
 	err = sqlDB.Ping()
 	if err != nil {
-		apierrors.ProcessRawAsPrivate(c, err)
-		return
+		return apierrors.NewPrivate(err)
 	}
 
-	c.JSON(http.StatusOK, nil)
+	return c.SendStatus(fiber.StatusOK)
 }

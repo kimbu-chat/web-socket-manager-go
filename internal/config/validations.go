@@ -4,10 +4,10 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/gin-gonic/gin/binding"
 	en_translations "github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
+
 	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
 )
 
@@ -19,15 +19,11 @@ func initValidations() {
 		panic("can't find en translator")
 	}
 
-	apierrors.Init(translations)
+	validator := validator.New()
+	apierrors.Init(translations, validator)
 
-	validator := getValidator()
 	initJsonTagName(validator)
 	initTranslations(validator, translations)
-}
-
-func getValidator() *validator.Validate {
-	return binding.Validator.Engine().(*validator.Validate)
 }
 
 func initJsonTagName(v *validator.Validate) {
