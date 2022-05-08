@@ -24,7 +24,5 @@ func main() {
 
 	app := routes.InitApp()
 
-	//TODO: move address to config
-	// https://github.com/kimbu-chat/web-socket-manager-go/issues/27
-	server.Run(":8080", app)
+	server.Run(config.ListeningAddress(), app)
 }

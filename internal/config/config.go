@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -27,6 +28,18 @@ func SentryFlushTimeout() time.Duration {
 	}
 
 	return time.Duration(seconds) * time.Second
+}
+
+func ListeningPort() string {
+	return os.Getenv("LISTENING_PORT")
+}
+
+func ListeningHost() string {
+	return os.Getenv("LISTENING_HOST")
+}
+
+func ListeningAddress() string {
+	return fmt.Sprintf("%s:%s", ListeningHost(), ListeningPort())
 }
 
 func DbHost() string {
