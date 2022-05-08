@@ -6,13 +6,14 @@ import (
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/apiproto"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config"
+	"github.com/sirupsen/logrus"
 )
 
 func BroadcastData(userIds []int64, data []byte) error {
 	client := config.GetGRPCClient()
 
 	request := apiproto.BroadcastRequest{
-		Channels: convertIntArrayToString(userIds),
+		Channels: convertIntArrayToChannels(userIds),
 		Data:     data,
 	}
 
@@ -22,13 +23,13 @@ func BroadcastData(userIds []int64, data []byte) error {
 	}
 
 	if response.Error != nil {
-		fmt.Printf("PublishToUsers error, code: %v. Message: %v\n", response.Error.Code, response.Error.Message)
+		logrus.Error(fmt.Sprintf("PublishToUsers error, code: %v. Message: %v\n", response.Error.Code, response.Error.Message))
 	}
 
 	return nil
 }
 
-func convertIntArrayToString(numbers []int64) []string {
+func convertIntArrayToChannels(numbers []int64) []string {
 	length := len(numbers)
 
 	result := make([]string, length)
