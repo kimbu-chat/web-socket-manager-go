@@ -1,9 +1,8 @@
 package config
 
 import (
-	"log"
-
 	"github.com/getsentry/sentry-go"
+	"github.com/sirupsen/logrus"
 )
 
 func initSentry() {
@@ -13,7 +12,7 @@ func initSentry() {
 		AttachStacktrace: true,
 	})
 	if err != nil {
-		log.Fatalf("initSentry: %s", err)
+		logrus.Fatalf("initSentry: %s", err)
 	}
 
 }
