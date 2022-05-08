@@ -8,9 +8,11 @@ import (
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/contrib/fibersentry"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 
 	_ "github.com/kimbu-chat/web-socket-manager-go/docs"
+	"github.com/kimbu-chat/web-socket-manager-go/internal/config"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/handlers"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/pkg/apierrors"
 )
@@ -19,6 +21,10 @@ func InitApp() *fiber.App {
 	app := fiber.New(fiber.Config{
 		ErrorHandler: apierrors.ErrorHandler,
 	})
+
+	if config.Env().Dev() {
+		app.Use(logger.New())
+	}
 
 	sentryMiddleware := fibersentry.New(fibersentry.Config{Repanic: true})
 	recoverMiddleware := recover.New(
