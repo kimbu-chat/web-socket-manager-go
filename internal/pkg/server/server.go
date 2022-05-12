@@ -1,12 +1,12 @@
 package server
 
 import (
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/sirupsen/logrus"
 )
 
 func Run(address string, app *fiber.App) {
@@ -20,11 +20,11 @@ func Run(address string, app *fiber.App) {
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
 
 	<-stop
-	log.Println("Shutting down server...")
+	logrus.Info("Shutting down server...")
 
 	if err := app.Shutdown(); err != nil {
-		log.Fatal("Server forced to shutdown:", err)
+		logrus.Fatal("Server forced to shutdown:", err)
 	}
 
-	log.Println("Server exiting")
+	logrus.Info("Server exiting")
 }
