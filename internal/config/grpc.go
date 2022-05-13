@@ -1,7 +1,7 @@
 package config
 
 import (
-	"os"
+	"context"
 
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -13,11 +13,26 @@ import (
 var client pb.CentrifugoApiClient
 var conenction *grpc.ClientConn
 
-func initGRPCCleint() {
-	addr := os.Getenv("CENTRIFUGO_GRPC_ADDRESS")
+type keyAuth struct {
+	key string
+}
 
+func (t keyAuth) GetRequestMetadata(ctx context.Context, uri ...string) (map[string]string, error) {
+	return map[string]string{
+		"authorization": "apikey " + t.key,
+	}, nil
+}
+
+func (t keyAuth) RequireTransportSecurity() bool {
+	return false
+}
+
+func initGRPCCleint() {
 	var err error
-	conenction, err = grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+	conenction, err = grpc.Dial(CentrifugoGRPCAddress(),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithPerRPCCredentials(keyAuth{CentrifugoAPIKey()}))
 	if err != nil {
 		logrus.Fatalf("did not connect: %v", err)
 		return

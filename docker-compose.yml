@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  websocket-manager:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - centrifugo
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - CENTRIFUGO_GRPC_ADDRESS=centrifugo:10000
+      - CENTRIFUGO_API_KEY=f87b94fa-1858-4026-829b-b6b18e0673e4
+    env_file: .env
+  postgres:
+    image: postgres:14.2
+    restart: always
+    ports:
+      - 5439:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: websocketmanager
+  centrifugo:
+    image: centrifugo/centrifugo:v3.2
+    environment:
+      CENTRIFUGO_TOKEN_HMAC_SECRET_KEY: 17b8c4b5-e3d8-4a7e-90dc-d6014e9fef64
+      CENTRIFUGO_API_KEY: f87b94fa-1858-4026-829b-b6b18e0673e4
+      CENTRIFUGO_ADMIN_PASSWORD: admin_password
+      CENTRIFUGO_ADMIN_SECRET: admin_secret
+      CENTRIFUGO_ADMIN: 'true'
+      CENTRIFUGO_USER_SUBSCRIBE_TO_PERSONAL: 'true'
+      CENTRIFUGO_ALLOWED_ORIGINS: '*'
+      CENTRIFUGO_GRPC_API: 'true'
+    ports:
+      - 8000:8000 # HTTP
+      - 10000:10000 # GRPC
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535

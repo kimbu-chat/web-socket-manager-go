@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config/db"
 )
@@ -62,6 +63,14 @@ func DbPort() string {
 	return os.Getenv("DB_PORT")
 }
 
+func CentrifugoGRPCAddress() string {
+	return os.Getenv("CENTRIFUGO_GRPC_ADDRESS")
+}
+
+func CentrifugoAPIKey() string {
+	return os.Getenv("CENTRIFUGO_API_KEY")
+}
+
 func Init() {
 	loadCfg()
 	initSentry()
@@ -90,6 +99,6 @@ func Close() {
 func loadCfg() {
 	err := godotenv.Load()
 	if err != nil {
-		panic(err)
+		logrus.Info(".env file is not loaded. Environemnt variables are used")
 	}
 }
