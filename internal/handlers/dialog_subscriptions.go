@@ -20,7 +20,7 @@ func NewDialogSubscriptions() *DialogSubscriptions {
 // @Tags         DialogSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearDialogSubscriptions  true
+// @Param        message  body      forms.ClearDialogSubscriptions  true "CreateDialogSubscriptions"
 // @Success      204      {object}  nil                                        "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
@@ -43,7 +43,7 @@ func (h *DialogSubscriptions) CreateList(c *fiber.Ctx) error {
 // @Tags         DialogSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.RemoveDialogSubscriptions  true
+// @Param        message  body      forms.RemoveDialogSubscriptions  true      "RemoveDialogSubscriptions"
 // @Success      204      {object}  nil                                        "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
@@ -66,7 +66,7 @@ func (h *DialogSubscriptions) RemoveList(c *fiber.Ctx) error {
 // @Tags         DialogSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearDialogSubscriptions  true
+// @Param        message  body      forms.ClearDialogSubscriptions  true       "ClearDialogSubscriptions"
 // @Success      204      {object}  nil                                        "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse

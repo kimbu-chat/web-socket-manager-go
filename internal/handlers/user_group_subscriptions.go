@@ -20,7 +20,7 @@ func NewUserGroupSubscriptions() *UserGroupSubscriptions {
 // @Tags         UserGroupSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.CreateUserGroupSubscriptions  true
+// @Param        message  body      forms.CreateUserGroupSubscriptions  true  "CreateUserGroupSubscriptions"
 // @Success      201      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
@@ -43,7 +43,7 @@ func (h *UserGroupSubscriptions) CreateList(c *fiber.Ctx) error {
 // @Tags         UserGroupSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.RemoveUserGroupSubscriptions  true
+// @Param        message  body      forms.RemoveUserGroupSubscriptions  true  "RemoveUserGroupSubscriptions"
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
@@ -66,7 +66,7 @@ func (h *UserGroupSubscriptions) RemoveList(c *fiber.Ctx) error {
 // @Tags         UserGroupSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearUserGroupSubscriptions  true
+// @Param        message  body      forms.ClearUserGroupSubscriptions  true  "ClearUserGroupSubscriptions"
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse

@@ -19,7 +19,7 @@ func NewMessageToUserGroup() *MessageToUserGroup {
 // @Summary      Publish message to user group
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.PublishMessageToUserGroup  true
+// @Param        message  body      forms.PublishMessageToUserGroup  true "PublishMessageToUserGroup"
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse

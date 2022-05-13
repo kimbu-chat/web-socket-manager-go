@@ -18,7 +18,7 @@ func NewMessageToUsers() *MessageToUsers {
 // @Summary      Publish message to users
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.PublishMessageToUsers  true
+// @Param        message  body      forms.PublishMessageToUsers  true "PublishMessageToUsers"
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
