@@ -1,6 +1,6 @@
 package models
 
-type UserGroupSubscription struct {
+type GroupSubscription struct {
 	UserId  int64
 	GroupId int64
 }

@@ -1,10 +1,17 @@
 
 -- +migrate Up
-CREATE TABLE user_group_subscriptions
+CREATE TABLE group_subscriptions
 (
     user_id BIGINT,
     group_id BIGINT,
     PRIMARY KEY(user_id, group_id)
+);
+
+CREATE TABLE channel_subscriptions
+(
+    user_id BIGINT,
+    channel_id BIGINT,
+    PRIMARY KEY(user_id, channel_id)
 );
 
 CREATE TABLE dialog_subscriptions
@@ -15,5 +22,6 @@ CREATE TABLE dialog_subscriptions
 );
 
 -- +migrate Down
-DROP TABLE user_group_subscriptions;
+DROP TABLE group_subscriptions;
 DROP TABLE dialog_subscriptions;
+DROP TABLE channel_subscriptions;
