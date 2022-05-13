@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/clear-user-group-subscriptions": {
+        "/api/dialogs/subscriptions": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -25,17 +25,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserGroupSubscriptions"
+                    "DialogSubscriptions"
                 ],
-                "summary": "Clear user group subscriptions",
+                "summary": "Clear dialog subscriptions",
                 "parameters": [
                     {
-                        "description": "User group subscriptions clean",
+                        "description": "CreateDialogSubscriptions",
                         "name": "message",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.ClearUserGroupSubscriptions"
+                            "$ref": "#/definitions/forms.ClearDialogSubscriptions"
                         }
                     }
                 ],
@@ -61,7 +61,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/clear-user-interlocutor-subscriptions": {
+        "/api/dialogs/subscriptions/clear": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -70,17 +70,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserInterlocutorSubscriptions"
+                    "DialogSubscriptions"
                 ],
-                "summary": "Clear all user interlocutor subscriptions for specific user",
+                "summary": "Clear all dialog subscriptions for specific user",
                 "parameters": [
                     {
-                        "description": "User interlocutor subscriptions clean",
+                        "description": "ClearDialogSubscriptions",
                         "name": "message",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.ClearUserInterlocutorSubscriptions"
+                            "$ref": "#/definitions/forms.ClearDialogSubscriptions"
                         }
                     }
                 ],
@@ -106,7 +106,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/create-user-group-subscriptions": {
+        "/api/dialogs/subscriptions/remove": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -115,62 +115,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserGroupSubscriptions"
+                    "DialogSubscriptions"
                 ],
-                "summary": "Create user group subscriptions",
+                "summary": "Remove set of user dialogs for specific user",
                 "parameters": [
                     {
-                        "description": "User group subscriptions creation",
+                        "description": "RemoveDialogSubscriptions",
                         "name": "message",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.CreateUserGroupSubscriptions"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Success"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
-                        }
-                    },
-                    "500": {
-                        "description": ""
-                    }
-                }
-            }
-        },
-        "/api/create-user-interlocutor-subscriptions": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "UserInterlocutorSubscriptions"
-                ],
-                "summary": "Clear user interlocutor subscriptions",
-                "parameters": [
-                    {
-                        "description": "User interlocutor subscriptions clean",
-                        "name": "message",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/forms.CreateUserInterlocutorSubscriptions"
+                            "$ref": "#/definitions/forms.RemoveDialogSubscriptions"
                         }
                     }
                 ],
@@ -196,7 +151,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/publish-message-to-user-channels": {
+        "/api/user-groups/publish": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -204,52 +159,10 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Publish message to users",
+                "summary": "Publish message to user group",
                 "parameters": [
                     {
-                        "description": "Message to users",
-                        "name": "message",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/forms.PublishMessageToUsers"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Success"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
-                        }
-                    },
-                    "500": {
-                        "description": ""
-                    }
-                }
-            }
-        },
-        "/api/publish-message-to-user-group": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Publish message to group",
-                "parameters": [
-                    {
-                        "description": "Message to group",
+                        "description": "PublishMessageToUserGroup",
                         "name": "message",
                         "in": "body",
                         "required": true,
@@ -280,7 +193,97 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/remove-user-group-subscriptions": {
+        "/api/user-groups/subscriptions": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserGroupSubscriptions"
+                ],
+                "summary": "Create user group subscriptions",
+                "parameters": [
+                    {
+                        "description": "CreateUserGroupSubscriptions",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.CreateUserGroupSubscriptions"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/user-groups/subscriptions/clear": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserGroupSubscriptions"
+                ],
+                "summary": "Clear user group subscriptions",
+                "parameters": [
+                    {
+                        "description": "ClearUserGroupSubscriptions",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.ClearUserGroupSubscriptions"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/user-groups/subscriptions/remove": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -294,7 +297,7 @@ const docTemplate = `{
                 "summary": "Remove user group subscriptions",
                 "parameters": [
                     {
-                        "description": "User group subscriptions removing",
+                        "description": "RemoveUserGroupSubscriptions",
                         "name": "message",
                         "in": "body",
                         "required": true,
@@ -325,7 +328,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/remove-user-interlocutor-subscriptions": {
+        "/api/users/publish": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -333,18 +336,15 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
-                "tags": [
-                    "UserInterlocutorSubscriptions"
-                ],
-                "summary": "Remove set of user interlocutor subscriptions for specific user",
+                "summary": "Publish message to users",
                 "parameters": [
                     {
-                        "description": "User interlocutor subscriptions removing",
+                        "description": "PublishMessageToUsers",
                         "name": "message",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.RemoveUserInterlocutorSubscriptions"
+                            "$ref": "#/definitions/forms.PublishMessageToUsers"
                         }
                     }
                 ],
@@ -402,6 +402,17 @@ const docTemplate = `{
                 }
             }
         },
+        "forms.ClearDialogSubscriptions": {
+            "type": "object",
+            "required": [
+                "initiatorId"
+            ],
+            "properties": {
+                "initiatorId": {
+                    "type": "integer"
+                }
+            }
+        },
         "forms.ClearUserGroupSubscriptions": {
             "type": "object",
             "required": [
@@ -409,17 +420,6 @@ const docTemplate = `{
             ],
             "properties": {
                 "groupId": {
-                    "type": "integer"
-                }
-            }
-        },
-        "forms.ClearUserInterlocutorSubscriptions": {
-            "type": "object",
-            "required": [
-                "userId"
-            ],
-            "properties": {
-                "userId": {
                     "type": "integer"
                 }
             }
@@ -439,24 +439,6 @@ const docTemplate = `{
                     "items": {
                         "type": "integer"
                     }
-                }
-            }
-        },
-        "forms.CreateUserInterlocutorSubscriptions": {
-            "type": "object",
-            "required": [
-                "interlocutorIds",
-                "userId"
-            ],
-            "properties": {
-                "interlocutorIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "userId": {
-                    "type": "integer"
                 }
             }
         },
@@ -493,6 +475,24 @@ const docTemplate = `{
                 }
             }
         },
+        "forms.RemoveDialogSubscriptions": {
+            "type": "object",
+            "required": [
+                "initiatorId",
+                "userIds"
+            ],
+            "properties": {
+                "initiatorId": {
+                    "type": "integer"
+                },
+                "userIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "forms.RemoveUserGroupSubscriptions": {
             "type": "object",
             "required": [
@@ -508,24 +508,6 @@ const docTemplate = `{
                     "items": {
                         "type": "integer"
                     }
-                }
-            }
-        },
-        "forms.RemoveUserInterlocutorSubscriptions": {
-            "type": "object",
-            "required": [
-                "interlocutorIds",
-                "userId"
-            ],
-            "properties": {
-                "interlocutorIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "userId": {
-                    "type": "integer"
                 }
             }
         }
