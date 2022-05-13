@@ -11,6 +11,7 @@ import (
 
 func Run(address string, app *fiber.App) {
 	go func() {
+		logrus.Infof("server is listening on %s", address)
 		if err := app.Listen(address); err != nil {
 			panic(err)
 		}

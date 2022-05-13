@@ -1,10 +1,8 @@
 ## Setup
 
 1. Install go1.18.1
-2. Run postgres instance:
-    - Clone services repository <https://github.com/kimbu-chat/services>
-    - Run postgres in context of services repository: `docker-compose up -d postgres`
-    - Create database in postgres: `docker exec postgres createdb -U sa websocketmanager`
+2. Run postgres with centrifugo:
+    - `docker-compose up -d postgres centrifugo`
 3. Copy file `.env.sample` to `.env`
 4. Run migrations with env variables from .env file: `export $(cat .env | xargs); sql-migrate up`
 
@@ -12,6 +10,12 @@
 
 ```
 go run cmd/websocketmanager/main.go
+```
+
+## Run using docker
+
+```
+docker-compose up -d
 ```
 
 ## Migrations
