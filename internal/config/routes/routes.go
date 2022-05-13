@@ -39,16 +39,16 @@ func InitApp() *fiber.App {
 
 	apiGroup := app.Group("/api")
 	{
-		apiGroup.Post("/publish-message-to-user-channels", handlers.NewMessageToUsers().Publish)
-		apiGroup.Post("/publish-message-to-user-group", handlers.NewMessageToUserGroup().Publish)
+		apiGroup.Post("/users/publish", handlers.NewMessageToUsers().Publish)
 
-		apiGroup.Post("/create-user-group-subscriptions", handlers.NewUserGroupSubscriptions().CreateList)
-		apiGroup.Post("/remove-user-group-subscriptions", handlers.NewUserGroupSubscriptions().RemoveList)
-		apiGroup.Post("/clear-user-group-subscriptions", handlers.NewUserGroupSubscriptions().Clear)
+		apiGroup.Post("/user-groups/publish", handlers.NewMessageToUserGroup().Publish)
+		apiGroup.Post("/user-groups/subscriptions", handlers.NewUserGroupSubscriptions().CreateList)
+		apiGroup.Post("/user-groups/subscriptions/remove", handlers.NewUserGroupSubscriptions().RemoveList)
+		apiGroup.Post("/user-groups/subscriptions/clear", handlers.NewUserGroupSubscriptions().Clear)
 
-		apiGroup.Post("/create-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().CreateList)
-		apiGroup.Post("/remove-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().RemoveList)
-		apiGroup.Post("/clear-user-interlocutor-subscriptions", handlers.NewUserInterlocutorSubscriptions().Clear)
+		apiGroup.Post("/dialogs/subscriptions", handlers.NewDialogSubscriptions().CreateList)
+		apiGroup.Post("/dialogs/subscriptions/remove", handlers.NewDialogSubscriptions().RemoveList)
+		apiGroup.Post("/dialogs/subscriptions/clear", handlers.NewDialogSubscriptions().Clear)
 	}
 
 	return app

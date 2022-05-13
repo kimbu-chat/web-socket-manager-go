@@ -7,13 +7,13 @@ CREATE TABLE user_group_subscriptions
     PRIMARY KEY(user_id, group_id)
 );
 
-CREATE TABLE user_interlocutor_subscriptions
+CREATE TABLE dialog_subscriptions
 (
-    user_id BIGINT,
-    interlocutor_id BIGINT,
-    PRIMARY KEY(user_id, interlocutor_id)
+    initiatorId BIGINT,
+    userId BIGINT,
+    PRIMARY KEY(initiatorId, userId)
 );
 
 -- +migrate Down
 DROP TABLE user_group_subscriptions;
-DROP TABLE user_interlocutor_subscriptions;
+DROP TABLE dialog_subscriptions;
