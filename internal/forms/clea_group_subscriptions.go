@@ -1,5 +1,5 @@
 package forms
 
-type ClearUserGroupSubscriptions struct {
+type ClearGroupSubscriptions struct {
 	GroupId int64 `json:"groupId" validate:"required"`
 }

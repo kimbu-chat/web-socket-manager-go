@@ -16,6 +16,48 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/channels/publish": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Publish message to channel",
+                "parameters": [
+                    {
+                        "description": "PublishMessageToChannel",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.PublishMessageToChannel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/dialogs/subscriptions": {
             "post": {
                 "consumes": [
@@ -151,7 +193,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/user-groups/publish": {
+        "/api/groups/publish": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -159,15 +201,15 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Publish message to user group",
+                "summary": "Publish message to group",
                 "parameters": [
                     {
-                        "description": "PublishMessageToUserGroup",
+                        "description": "PublishMessageToGroup",
                         "name": "message",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.PublishMessageToUserGroup"
+                            "$ref": "#/definitions/forms.PublishMessageToGroup"
                         }
                     }
                 ],
@@ -193,7 +235,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/user-groups/subscriptions": {
+        "/api/groups/subscriptions": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -202,17 +244,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserGroupSubscriptions"
+                    "GroupSubscriptions"
                 ],
-                "summary": "Create user group subscriptions",
+                "summary": "Create group subscriptions",
                 "parameters": [
                     {
-                        "description": "CreateUserGroupSubscriptions",
+                        "description": "CreateGroupSubscriptions",
                         "name": "message",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.CreateUserGroupSubscriptions"
+                            "$ref": "#/definitions/forms.CreateGroupSubscriptions"
                         }
                     }
                 ],
@@ -238,7 +280,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/user-groups/subscriptions/clear": {
+        "/api/groups/subscriptions/clear": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -247,17 +289,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserGroupSubscriptions"
+                    "GroupSubscriptions"
                 ],
-                "summary": "Clear user group subscriptions",
+                "summary": "Clear group subscriptions",
                 "parameters": [
                     {
-                        "description": "ClearUserGroupSubscriptions",
+                        "description": "ClearGroupSubscriptions",
                         "name": "message",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.ClearUserGroupSubscriptions"
+                            "$ref": "#/definitions/forms.ClearGroupSubscriptions"
                         }
                     }
                 ],
@@ -283,7 +325,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/user-groups/subscriptions/remove": {
+        "/api/groups/subscriptions/remove": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -292,17 +334,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserGroupSubscriptions"
+                    "GroupSubscriptions"
                 ],
-                "summary": "Remove user group subscriptions",
+                "summary": "Remove group subscriptions",
                 "parameters": [
                     {
-                        "description": "RemoveUserGroupSubscriptions",
+                        "description": "RemoveGroupSubscriptions",
                         "name": "message",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.RemoveUserGroupSubscriptions"
+                            "$ref": "#/definitions/forms.RemoveGroupSubscriptions"
                         }
                     }
                 ],
@@ -402,6 +444,17 @@ const docTemplate = `{
                 }
             }
         },
+        "forms.ClearChannelSubscriptions": {
+            "type": "object",
+            "required": [
+                "channelId"
+            ],
+            "properties": {
+                "channelId": {
+                    "type": "integer"
+                }
+            }
+        },
         "forms.ClearDialogSubscriptions": {
             "type": "object",
             "required": [
@@ -413,7 +466,7 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.ClearUserGroupSubscriptions": {
+        "forms.ClearGroupSubscriptions": {
             "type": "object",
             "required": [
                 "groupId"
@@ -424,7 +477,25 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.CreateUserGroupSubscriptions": {
+        "forms.CreateChannelSubscriptions": {
+            "type": "object",
+            "required": [
+                "channelId",
+                "userIds"
+            ],
+            "properties": {
+                "channelId": {
+                    "type": "integer"
+                },
+                "userIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "forms.CreateGroupSubscriptions": {
             "type": "object",
             "required": [
                 "groupId",
@@ -442,7 +513,22 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.PublishMessageToUserGroup": {
+        "forms.PublishMessageToChannel": {
+            "type": "object",
+            "required": [
+                "channelId",
+                "message"
+            ],
+            "properties": {
+                "channelId": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "object"
+                }
+            }
+        },
+        "forms.PublishMessageToGroup": {
             "type": "object",
             "required": [
                 "groupId",
@@ -475,6 +561,24 @@ const docTemplate = `{
                 }
             }
         },
+        "forms.RemoveChannelSubscriptions": {
+            "type": "object",
+            "required": [
+                "channelId",
+                "userIds"
+            ],
+            "properties": {
+                "channelId": {
+                    "type": "integer"
+                },
+                "userIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "forms.RemoveDialogSubscriptions": {
             "type": "object",
             "required": [
@@ -493,7 +597,7 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.RemoveUserGroupSubscriptions": {
+        "forms.RemoveGroupSubscriptions": {
             "type": "object",
             "required": [
                 "groupId",

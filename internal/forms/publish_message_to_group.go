@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-type PublishMessageToUserGroup struct {
+type PublishMessageToGroup struct {
 	GroupId int64           `json:"groupId" validate:"required"`
 	Message json.RawMessage `json:"message" validate:"required" swaggertype:"object"`
 }

@@ -8,77 +8,77 @@ import (
 	"github.com/kimbu-chat/web-socket-manager-go/internal/services"
 )
 
-type UserGroupSubscriptions struct {
-	service *services.UserGroupSubscriptions
+type ChannelSubscriptions struct {
+	service *services.ChannelSubscriptions
 }
 
-func NewUserGroupSubscriptions() *UserGroupSubscriptions {
-	return &UserGroupSubscriptions{services.NewUserGroupSubscriptions()}
+func NewChannelSubscriptions() *ChannelSubscriptions {
+	return &ChannelSubscriptions{services.NewChannelSubscriptions()}
 }
 
-// @Summary      Create user group subscriptions
-// @Tags         UserGroupSubscriptions
+// @Summary      Create channel subscriptions
+// @Tags         ChannelSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.CreateUserGroupSubscriptions  true  "CreateUserGroupSubscriptions"
+// @Param        message  body      forms.CreateChannelSubscriptions  true  "CreateChannelSubscriptions"
 // @Success      201      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/user-groups/subscriptions [post]
-func (h *UserGroupSubscriptions) CreateList(c *fiber.Ctx) error {
-	form := forms.CreateUserGroupSubscriptions{}
+// @Router       /api/groups/subscriptions [post]
+func (h *ChannelSubscriptions) CreateList(c *fiber.Ctx) error {
+	form := forms.CreateChannelSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
 		return err
 	}
 
-	if err := h.service.CreateList(form.GroupId, form.UserIds); err != nil {
+	if err := h.service.CreateList(form.ChannelId, form.UserIds); err != nil {
 		return apierrors.NewPrivate(err)
 	}
 
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
-// @Summary      Remove user group subscriptions
-// @Tags         UserGroupSubscriptions
+// @Summary      Remove channel subscriptions
+// @Tags         ChannelSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.RemoveUserGroupSubscriptions  true  "RemoveUserGroupSubscriptions"
+// @Param        message  body      forms.RemoveChannelSubscriptions  true  "RemoveChannelSubscriptions"
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/user-groups/subscriptions/remove [post]
-func (h *UserGroupSubscriptions) RemoveList(c *fiber.Ctx) error {
-	form := forms.RemoveUserGroupSubscriptions{}
+// @Router       /api/groups/subscriptions/remove [post]
+func (h *ChannelSubscriptions) RemoveList(c *fiber.Ctx) error {
+	form := forms.RemoveChannelSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
 		return err
 	}
 
-	if err := h.service.RemoveList(form.GroupId, form.UserIds); err != nil {
+	if err := h.service.RemoveList(form.ChannelId, form.UserIds); err != nil {
 		return apierrors.NewPrivate(err)
 	}
 
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
-// @Summary      Clear user group subscriptions
-// @Tags         UserGroupSubscriptions
+// @Summary      Clear channel subscriptions
+// @Tags         ChannelSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearUserGroupSubscriptions  true  "ClearUserGroupSubscriptions"
+// @Param        message  body      forms.ClearChannelSubscriptions  true  "ClearChannelSubscriptions"
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/user-groups/subscriptions/clear [post]
-func (h *UserGroupSubscriptions) Clear(c *fiber.Ctx) error {
-	form := forms.ClearUserGroupSubscriptions{}
+// @Router       /api/groups/subscriptions/clear [post]
+func (h *ChannelSubscriptions) Clear(c *fiber.Ctx) error {
+	form := forms.ClearChannelSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
 		return err
 	}
 
-	if err := h.service.Clear(form.GroupId); err != nil {
+	if err := h.service.Clear(form.ChannelId); err != nil {
 		return apierrors.NewPrivate(err)
 	}
 
