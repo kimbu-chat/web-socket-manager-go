@@ -9,6 +9,7 @@ services:
       - centrifugo
     environment:
       - ENV=production
+      - VERSION
       - DB_HOST=postgres
       - DB_PORT=5432
       - CENTRIFUGO_GRPC_ADDRESS=centrifugo:10000

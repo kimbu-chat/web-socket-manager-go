@@ -71,6 +71,10 @@ func CentrifugoAPIKey() string {
 	return os.Getenv("CENTRIFUGO_API_KEY")
 }
 
+func Version() string {
+	return os.Getenv("VERSION")
+}
+
 func Init() {
 	loadCfg()
 	initSentry()
