@@ -193,48 +193,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/groups/publish": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Publish message to group",
-                "parameters": [
-                    {
-                        "description": "PublishMessageToGroup",
-                        "name": "message",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/forms.PublishMessageToGroup"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Success"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
-                        }
-                    },
-                    "500": {
-                        "description": ""
-                    }
-                }
-            }
-        },
         "/api/groups/subscriptions": {
             "post": {
                 "consumes": [
@@ -345,6 +303,48 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/forms.RemoveGroupSubscriptions"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/publish-message-to-group": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Publish message to group",
+                "parameters": [
+                    {
+                        "description": "PublishMessageToGroup",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.PublishMessageToGroup"
                         }
                     }
                 ],
