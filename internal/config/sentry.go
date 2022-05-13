@@ -8,7 +8,7 @@ import (
 func initSentry() {
 	err := sentry.Init(sentry.ClientOptions{
 		Dsn:              SentryDNS(),
-		Release:          "0.1",
+		Release:          Version(),
 		AttachStacktrace: true,
 	})
 	if err != nil {
