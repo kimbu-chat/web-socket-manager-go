@@ -1,8 +1,9 @@
 import axios from "axios";
+import {API_BASE} from "../common/environment";
 
 describe("users controller", () => {
     test("publish message to users successfully", async () => {
-        const response = await axios.post('http://localhost:8080/api/users/publish', { userIds: [2], message: {test: 1} });
+        const response = await axios.post(`${API_BASE}/api/users/publish`, { userIds: [2], message: {test: 1} });
         expect(response.status).toBe(204)
     })
 })
