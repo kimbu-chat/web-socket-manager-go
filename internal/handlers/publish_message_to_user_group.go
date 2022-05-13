@@ -16,15 +16,15 @@ func NewMessageToUserGroup() *MessageToUserGroup {
 	return &MessageToUserGroup{services.NewMessageToUserGroup()}
 }
 
-// @Summary      Publish message to group
+// @Summary      Publish message to user group
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.PublishMessageToUserGroup  true "Message to group"
+// @Param        message  body      forms.PublishMessageToUserGroup  true
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/publish-message-to-user-group [post]
+// @Router       /api/user-groups/publish [post]
 func (h *MessageToUserGroup) Publish(c *fiber.Ctx) error {
 	form := forms.PublishMessageToUserGroup{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {

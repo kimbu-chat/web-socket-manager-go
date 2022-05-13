@@ -18,12 +18,12 @@ func NewMessageToUsers() *MessageToUsers {
 // @Summary      Publish message to users
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.PublishMessageToUsers  true "Message to users"
+// @Param        message  body      forms.PublishMessageToUsers  true
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/publish-message-to-user-channels [post]
+// @Router       /api/users/publish [post]
 func (h *MessageToUsers) Publish(c *fiber.Ctx) error {
 	form := forms.PublishMessageToUsers{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {

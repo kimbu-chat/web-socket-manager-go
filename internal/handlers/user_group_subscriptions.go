@@ -20,12 +20,12 @@ func NewUserGroupSubscriptions() *UserGroupSubscriptions {
 // @Tags         UserGroupSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.CreateUserGroupSubscriptions  true "User group subscriptions creation"
+// @Param        message  body      forms.CreateUserGroupSubscriptions  true
 // @Success      201      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/create-user-group-subscriptions [post]
+// @Router       /api/user-groups/subscriptions [post]
 func (h *UserGroupSubscriptions) CreateList(c *fiber.Ctx) error {
 	form := forms.CreateUserGroupSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
@@ -43,12 +43,12 @@ func (h *UserGroupSubscriptions) CreateList(c *fiber.Ctx) error {
 // @Tags         UserGroupSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.RemoveUserGroupSubscriptions  true "User group subscriptions removing"
+// @Param        message  body      forms.RemoveUserGroupSubscriptions  true
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/remove-user-group-subscriptions [post]
+// @Router       /api/user-groups/subscriptions/remove [post]
 func (h *UserGroupSubscriptions) RemoveList(c *fiber.Ctx) error {
 	form := forms.RemoveUserGroupSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
@@ -66,12 +66,12 @@ func (h *UserGroupSubscriptions) RemoveList(c *fiber.Ctx) error {
 // @Tags         UserGroupSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearUserGroupSubscriptions  true "User group subscriptions clean"
+// @Param        message  body      forms.ClearUserGroupSubscriptions  true
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/clear-user-group-subscriptions [post]
+// @Router       /api/user-groups/subscriptions/clear [post]
 func (h *UserGroupSubscriptions) Clear(c *fiber.Ctx) error {
 	form := forms.ClearUserGroupSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
