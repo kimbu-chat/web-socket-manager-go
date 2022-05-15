@@ -65,3 +65,10 @@ Regenerate documentation
 ```
 swag init -g internal/config/routes/routes.go -ot go
 ```
+
+## Run integration tests
+
+1. Run ```cd tests/integration```
+2. Run ```yarn install```
+3. Copy file `tests/integration/.env.sample` to `tests/integration/.env`
+4. Run tests ```yarn test```
