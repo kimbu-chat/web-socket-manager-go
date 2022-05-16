@@ -27,3 +27,13 @@ func (h *ChannelSubscriptions) ClearByChannelId(channelId int64) error {
 func (h *ChannelSubscriptions) ClearByUserId(userId int64) error {
 	return h.repo.ClearSubscriptionsByUserId(userId)
 }
+
+func (h *ChannelSubscriptions) Publish(channelId int64, data []byte) error {
+	userIds, err := h.repo.GetUserIdsByChannelId(channelId)
+
+	if err != nil {
+		return err
+	}
+
+	return BroadcastData(userIds, data)
+}

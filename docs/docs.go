@@ -117,7 +117,7 @@ const docTemplate = `{
                 "tags": [
                     "ChannelSubscriptions"
                 ],
-                "summary": "Clear channel subscriptions by channel id",
+                "summary": "ClearByInitiatorId channel subscriptions by channel id",
                 "parameters": [
                     {
                         "description": "ClearChannelSubscriptionsByChannelId",
@@ -162,7 +162,7 @@ const docTemplate = `{
                 "tags": [
                     "ChannelSubscriptions"
                 ],
-                "summary": "Clear channel subscriptions by user id",
+                "summary": "ClearByInitiatorId channel subscriptions by user id",
                 "parameters": [
                     {
                         "description": "ClearChannelSubscriptionsByUserId",
@@ -297,7 +297,7 @@ const docTemplate = `{
                 "tags": [
                     "DialogSubscriptions"
                 ],
-                "summary": "Clear all dialog subscriptions for specific user",
+                "summary": "ClearByInitiatorId all dialog subscriptions for specific user",
                 "parameters": [
                     {
                         "description": "ClearDialogSubscriptions",

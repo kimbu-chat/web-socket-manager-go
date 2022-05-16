@@ -23,3 +23,13 @@ func (h *DialogSubscriptions) RemoveList(initiatorId int64, userIds []int64) err
 func (h *DialogSubscriptions) Clear(initiatorId int64) error {
 	return h.repo.ClearSubscriptionsByInitiatorId(initiatorId)
 }
+
+func (h *DialogSubscriptions) Publish(initiatorId int64, data []byte) error {
+	userIds, err := h.repo.GetUserIdsByInitiatorId(initiatorId)
+
+	if err != nil {
+		return err
+	}
+
+	return BroadcastData(userIds, data)
+}

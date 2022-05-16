@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
-import {CENTRIFUGO_HMAC_SECRET, CENTRIFUGO_URL} from "./environment";
+import {API_BASE, CENTRIFUGO_HMAC_SECRET, CENTRIFUGO_URL} from "./environment";
 import Centrifuge from "centrifuge";
 import WebSocket from "ws";
+import axios, {AxiosResponse} from "axios";
 
 export const connectToCentrifugo = async (userId: number): Promise<Centrifuge> => {
     const token = jwt.sign({ sub: userId.toString() }, CENTRIFUGO_HMAC_SECRET);
@@ -59,3 +60,24 @@ export const closeCentrifugoConnection = async (connection: Centrifuge): Promise
 
     await disconnectPromise;
 }
+
+export const publishAndTrackEvents = async (userId: number, publishFn : () => Promise<AxiosResponse<void>>): Promise<void> => {
+    const connection = await connectToCentrifugo(userId);
+
+    const publishTimes = 1;
+
+    const waitEventsPromise = waitEvents(connection, publishTimes)
+
+    const publishMessageResp = await publishFn;
+
+    expect(publishMessageResp.status).toBe(204)
+
+    const publishedTimes = await waitEventsPromise;
+
+    expect(publishedTimes).toBe(publishTimes)
+
+    await closeCentrifugoConnection(connection);
+}
+
+
+
