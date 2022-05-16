@@ -20,6 +20,10 @@ func (h *ChannelSubscriptions) RemoveList(channelId int64, userIds []int64) erro
 	return h.repo.RemoveList(channelId, userIds)
 }
 
-func (h *ChannelSubscriptions) Clear(channelId int64) error {
+func (h *ChannelSubscriptions) ClearByChannelId(channelId int64) error {
 	return h.repo.ClearSubscriptionsByChannelId(channelId)
+}
+
+func (h *ChannelSubscriptions) ClearByUserId(userId int64) error {
+	return h.repo.ClearSubscriptionsByUserId(userId)
 }

@@ -32,10 +32,14 @@ func (r *GroupSubscriptionsRepository) RemoveList(groupId int64, userIds []int64
 
 func (r *GroupSubscriptionsRepository) GetUserIdsByGroupId(groupId int64) ([]int64, error) {
 	var userIds []int64
-	err := r.db.Select("user_id").Where("group_id = ?", groupId).Find(&userIds).Error
+	err := r.db.Table("group_subscriptions").Select("user_id").Where("group_id = ?", groupId).Find(&userIds).Error
 	return userIds, err
 }
 
 func (r *GroupSubscriptionsRepository) ClearSubscriptionsByGroupId(groupId int64) error {
 	return r.db.Where("group_id = ?", groupId).Delete([]models.GroupSubscription{}).Error
+}
+
+func (r *GroupSubscriptionsRepository) ClearSubscriptionsByUserId(userId int64) error {
+	return r.db.Where("user_id = ?", userId).Delete([]models.GroupSubscription{}).Error
 }

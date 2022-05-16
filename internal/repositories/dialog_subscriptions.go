@@ -32,7 +32,7 @@ func (r *DialogSubscriptionsRepository) RemoveList(initiatorId int64, userIds []
 
 func (r *DialogSubscriptionsRepository) GetUserIdsByInitiatorId(initiatorId int64) ([]int64, error) {
 	var userIds []int64
-	err := r.db.Select("user_id").Where("initiator_id = ?", initiatorId).Find(&userIds).Error
+	err := r.db.Table("dialog_subscriptions").Select("user_id").Where("initiator_id = ?", initiatorId).Find(&userIds).Error
 	return userIds, err
 }
 

@@ -3,3 +3,5 @@
 .env
 .vscode
 node_modules
+.__debug_bin
+.yarn-error.log

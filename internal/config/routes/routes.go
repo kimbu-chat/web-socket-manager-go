@@ -44,12 +44,14 @@ func InitApp() *fiber.App {
 		apiGroup.Post("/groups/publish", handlers.NewMessageToGroup().Publish)
 		apiGroup.Post("/groups/subscriptions", handlers.NewGroupSubscriptions().CreateList)
 		apiGroup.Post("/groups/subscriptions/remove", handlers.NewGroupSubscriptions().RemoveList)
-		apiGroup.Post("/groups/subscriptions/clear", handlers.NewGroupSubscriptions().Clear)
+		apiGroup.Post("/groups/subscriptions/clear-by-group-id", handlers.NewGroupSubscriptions().ClearByGroupId)
+		apiGroup.Post("/groups/subscriptions/clear-by-user-id", handlers.NewGroupSubscriptions().ClearByUserId)
 
 		apiGroup.Post("/channels/publish", handlers.NewMessageToChannel().Publish)
 		apiGroup.Post("/channels/subscriptions", handlers.NewChannelSubscriptions().CreateList)
 		apiGroup.Post("/channels/subscriptions/remove", handlers.NewChannelSubscriptions().RemoveList)
-		apiGroup.Post("/channels/subscriptions/clear", handlers.NewChannelSubscriptions().Clear)
+		apiGroup.Post("/channels/subscriptions/clear-by-channel-id", handlers.NewChannelSubscriptions().ClearByChannelId)
+		apiGroup.Post("/channels/subscriptions/clear-by-user-id", handlers.NewChannelSubscriptions().ClearByUserId)
 
 		apiGroup.Post("/dialogs/subscriptions", handlers.NewDialogSubscriptions().CreateList)
 		apiGroup.Post("/dialogs/subscriptions/remove", handlers.NewDialogSubscriptions().RemoveList)

@@ -17,6 +17,7 @@ func NewMessageToChannel() *MessageToChannel {
 }
 
 // @Summary      Publish message to channel
+// @Tags         ChannelSubscriptions
 // @Accept       json
 // @Produce      json
 // @Param        message  body      forms.PublishMessageToChannel  true "PublishMessageToChannel"

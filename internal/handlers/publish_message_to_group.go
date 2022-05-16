@@ -17,6 +17,7 @@ func NewMessageToGroup() *MessageToGroup {
 }
 
 // @Summary      Publish message to group
+// @Tags         GroupSubscriptions
 // @Accept       json
 // @Produce      json
 // @Param        message  body      forms.PublishMessageToGroup  true "PublishMessageToGroup"
@@ -24,7 +25,7 @@ func NewMessageToGroup() *MessageToGroup {
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/publish-message-to-group [post]
+// @Router       /api/groups/publish [post]
 func (h *MessageToGroup) Publish(c *fiber.Ctx) error {
 	form := forms.PublishMessageToGroup{}
 

@@ -16,11 +16,11 @@ func NewDialogSubscriptions() *DialogSubscriptions {
 	return &DialogSubscriptions{services.NewDialogSubscriptions()}
 }
 
-// @Summary      Clear dialog subscriptions
+// @Summary      Create dialog subscriptions
 // @Tags         DialogSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearDialogSubscriptions  true "CreateDialogSubscriptions"
+// @Param        message  body      forms.CreateDialogSubscriptions  true "CreateDialogSubscriptions"
 // @Success      204      {object}  nil                                        "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse

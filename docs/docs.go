@@ -24,6 +24,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "ChannelSubscriptions"
+                ],
                 "summary": "Publish message to channel",
                 "parameters": [
                     {
@@ -33,6 +36,186 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/forms.PublishMessageToChannel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/channels/subscriptions": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ChannelSubscriptions"
+                ],
+                "summary": "Create channel subscriptions",
+                "parameters": [
+                    {
+                        "description": "CreateChannelSubscriptions",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.CreateChannelSubscriptions"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/channels/subscriptions/clear-by-channel-id": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ChannelSubscriptions"
+                ],
+                "summary": "Clear channel subscriptions by channel id",
+                "parameters": [
+                    {
+                        "description": "ClearChannelSubscriptionsByChannelId",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.ClearChannelSubscriptionsByChannelId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/channels/subscriptions/clear-by-user-id": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ChannelSubscriptions"
+                ],
+                "summary": "Clear channel subscriptions by user id",
+                "parameters": [
+                    {
+                        "description": "ClearChannelSubscriptionsByUserId",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.ClearChannelSubscriptionsByUserId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/channels/subscriptions/remove": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ChannelSubscriptions"
+                ],
+                "summary": "Remove channel subscriptions",
+                "parameters": [
+                    {
+                        "description": "RemoveChannelSubscriptions",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.RemoveChannelSubscriptions"
                         }
                     }
                 ],
@@ -69,7 +252,7 @@ const docTemplate = `{
                 "tags": [
                     "DialogSubscriptions"
                 ],
-                "summary": "Clear dialog subscriptions",
+                "summary": "Create dialog subscriptions",
                 "parameters": [
                     {
                         "description": "CreateDialogSubscriptions",
@@ -77,7 +260,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.ClearDialogSubscriptions"
+                            "$ref": "#/definitions/forms.CreateDialogSubscriptions"
                         }
                     }
                 ],
@@ -193,6 +376,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/groups/publish": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GroupSubscriptions"
+                ],
+                "summary": "Publish message to group",
+                "parameters": [
+                    {
+                        "description": "PublishMessageToGroup",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.PublishMessageToGroup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/groups/subscriptions": {
             "post": {
                 "consumes": [
@@ -238,7 +466,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/groups/subscriptions/clear": {
+        "/api/groups/subscriptions/clear-by-group-id": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -249,15 +477,60 @@ const docTemplate = `{
                 "tags": [
                     "GroupSubscriptions"
                 ],
-                "summary": "Clear group subscriptions",
+                "summary": "ClearByChannelId group subscriptions by group id",
                 "parameters": [
                     {
-                        "description": "ClearGroupSubscriptions",
+                        "description": "ClearGroupSubscriptionsByGroupId",
                         "name": "message",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/forms.ClearGroupSubscriptions"
+                            "$ref": "#/definitions/forms.ClearGroupSubscriptionsByGroupId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/groups/subscriptions/clear-by-user-id": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GroupSubscriptions"
+                ],
+                "summary": "ClearByChannelId group subscriptions by user id",
+                "parameters": [
+                    {
+                        "description": "ClearGroupSubscriptionsByUserId",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/forms.ClearGroupSubscriptionsByUserId"
                         }
                     }
                 ],
@@ -328,48 +601,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/publish-message-to-group": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Publish message to group",
-                "parameters": [
-                    {
-                        "description": "PublishMessageToGroup",
-                        "name": "message",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/forms.PublishMessageToGroup"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Success"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
-                        }
-                    },
-                    "500": {
-                        "description": ""
-                    }
-                }
-            }
-        },
         "/api/users/publish": {
             "post": {
                 "consumes": [
@@ -377,6 +608,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Users"
                 ],
                 "summary": "Publish message to users",
                 "parameters": [
@@ -444,13 +678,24 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.ClearChannelSubscriptions": {
+        "forms.ClearChannelSubscriptionsByChannelId": {
             "type": "object",
             "required": [
                 "channelId"
             ],
             "properties": {
                 "channelId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "forms.ClearChannelSubscriptionsByUserId": {
+            "type": "object",
+            "required": [
+                "userId"
+            ],
+            "properties": {
+                "userId": {
                     "type": "integer"
                 }
             }
@@ -466,13 +711,24 @@ const docTemplate = `{
                 }
             }
         },
-        "forms.ClearGroupSubscriptions": {
+        "forms.ClearGroupSubscriptionsByGroupId": {
             "type": "object",
             "required": [
                 "groupId"
             ],
             "properties": {
                 "groupId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "forms.ClearGroupSubscriptionsByUserId": {
+            "type": "object",
+            "required": [
+                "userId"
+            ],
+            "properties": {
+                "userId": {
                     "type": "integer"
                 }
             }
@@ -485,6 +741,24 @@ const docTemplate = `{
             ],
             "properties": {
                 "channelId": {
+                    "type": "integer"
+                },
+                "userIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "forms.CreateDialogSubscriptions": {
+            "type": "object",
+            "required": [
+                "initiatorId",
+                "userIds"
+            ],
+            "properties": {
+                "initiatorId": {
                     "type": "integer"
                 },
                 "userIds": {
