@@ -1,5 +1,5 @@
 import axios, {AxiosError} from "axios";
-import {API_BASE, CENTRIFUGO_URL, CENTRIFUGO_HMAC_SECRET} from "../common/environment";
+import {API_BASE, CENTRIFUGO_URL, CENTRIFUGO_HMAC_SECRET, API} from "../common/environment";
 import {publishAndTrackEvents} from "../common/websockets";
 import {getError} from "../common/utils";
 import _ from "lodash";
@@ -26,7 +26,7 @@ describe("groups controller", () => {
 
         const request = { userIds: [userId], groupId: 1 };
 
-        const addSubscriptionFn = () => axios.post(`${API_BASE}/api/groups/subscriptions`, request);
+        const addSubscriptionFn = () => axios.post(API.GROUPS.CREATE_GROUP_SUBSCRIPTIONS, request);
 
         const addSubscriptionResp = await addSubscriptionFn();
 
@@ -42,11 +42,11 @@ describe("groups controller", () => {
 
         const userId = _.random(20, 100_000);
 
-        const createSubscriptionsResp = await axios.post(`${API_BASE}/api/groups/subscriptions`, { userIds: [userId], groupId: 1 });
+        const createSubscriptionsResp = await axios.post(API.GROUPS.CREATE_GROUP_SUBSCRIPTIONS, { userIds: [userId], groupId: 1 });
 
         expect(createSubscriptionsResp.status).toBe(204)
 
-        const publishFn = (index: number) => axios.post(`${API_BASE}/api/groups/publish`, { groupId: 1, message: index });
+        const publishFn = (index: number) => axios.post(API.GROUPS.PUBLISH_TO_GROUP, { groupId: 1, message: index });
 
         await publishAndTrackEvents(userId, publishTimes, publishFn)
     })
