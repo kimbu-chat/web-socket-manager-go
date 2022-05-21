@@ -1,25 +1,20 @@
 import axios from "axios";
 import {API_BASE} from "../common/environment";
-import {closeCentrifugoConnection, connectToCentrifugo, waitEvents, waitForDisconnect} from "../common/websockets";
+import {
+    publishAndTrackEvents,
+} from "../common/websockets";
+import _ from "lodash";
 
 describe("users controller", () => {
-    test("publish message to users successfully", async () => {
+    test("ensure published events are received", async () => {
 
-        const publishTimes = 1;
+        const publishTimes = _.random(10, 30);
 
-        const userId = 1;
+        const userId = _.random(1, 100_000);
 
-        let connection = await connectToCentrifugo(userId)
+        const publishFn = (data: number) => axios.post(`${API_BASE}/api/users/publish`, { userIds: [userId], message: data});
 
-        const waitEventsPromise = waitEvents(connection, publishTimes)
-    
-        await axios.post(`${API_BASE}/api/users/publish`, { userIds: [userId], message: { "1": 2 }});
-    
-        const publishedTimes = await waitEventsPromise;
-
-        expect(publishedTimes).toBe(publishTimes)
-
-        await closeCentrifugoConnection(connection);
+        await publishAndTrackEvents(userId, publishTimes, publishFn)
     })
 })
 

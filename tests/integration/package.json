@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
     "build": "tsc -p tsconfig.build.json"
   },
   "devDependencies": {
@@ -23,6 +23,8 @@
     "centrifuge": "^2.8.5",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
+    "pg-promise": "^10.11.1",
+    "postgres-cleaner": "^1.0.6",
     "ws": "^8.6.0"
   }
 }

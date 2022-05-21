@@ -53,6 +53,7 @@ func InitApp() *fiber.App {
 		apiGroup.Delete("/channels-subscriptions/channels/{channelId}", handlers.NewChannelSubscriptions().ClearByChannelId)
 		apiGroup.Delete("/users/{userId}/channels-subscriptions", handlers.NewChannelSubscriptions().ClearByUserId)
 
+		apiGroup.Post("/dialog-subscriptions/publish", handlers.NewDialogSubscriptions().Publish)
 		apiGroup.Post("/dialog-subscriptions", handlers.NewDialogSubscriptions().CreateList)
 		apiGroup.Post("/dialog-subscriptions/batch-remove", handlers.NewDialogSubscriptions().RemoveList)
 		apiGroup.Delete("/users/{initiatorId}/dialog-subscriptions", handlers.NewDialogSubscriptions().ClearByInitiatorId)

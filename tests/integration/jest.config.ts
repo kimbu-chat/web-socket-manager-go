@@ -9,5 +9,6 @@ const config: Config.InitialOptions = {
   setupFiles: [
     'dotenv/config'
   ],
+  setupFilesAfterEnv: ['<rootDir>/src/setup-tests.ts']
 }
 export default config

@@ -1,7 +1,8 @@
 import axios, {AxiosError} from "axios";
 import {API_BASE, CENTRIFUGO_URL, CENTRIFUGO_HMAC_SECRET} from "../common/environment";
-import {closeCentrifugoConnection, connectToCentrifugo, waitEvents} from "../common/websockets";
+import {publishAndTrackEvents} from "../common/websockets";
 import {getError} from "../common/utils";
+import _ from "lodash";
 
 describe("groups controller", () => {
     test("events aren't received after subscription deletion", async () => {
@@ -14,8 +15,6 @@ describe("groups controller", () => {
         const response = await axios.post(`${API_BASE}/api/groups/subscriptions`, { userIds: [userId], groupId: 1 });
 
         expect(response.status).toBe(204);
-
-
     })
 
     test("throws error if try to add two the same subscriptions", async () => {
@@ -38,34 +37,18 @@ describe("groups controller", () => {
         expect(error).toBeInstanceOf(AxiosError);
     })
 
-    
-
     test("publish message to group successfully", async () => {
-        const userId = 1;
+        const publishTimes = _.random(20, 100);
 
-        const clearResponse = await axios.post(`${API_BASE}/api/groups/subscriptions/clear-by-user-id`, { userId: userId });
-
-        expect(clearResponse.status).toBe(204)
+        const userId = _.random(20, 100_000);
 
         const createSubscriptionsResp = await axios.post(`${API_BASE}/api/groups/subscriptions`, { userIds: [userId], groupId: 1 });
 
         expect(createSubscriptionsResp.status).toBe(204)
 
-        const connection = await connectToCentrifugo(userId);
+        const publishFn = (index: number) => axios.post(`${API_BASE}/api/groups/publish`, { groupId: 1, message: index });
 
-        const publishTimes = 1;
-
-        const waitEventsPromise = waitEvents(connection, publishTimes)
-
-        const publishMessageResp = await axios.post(`${API_BASE}/api/groups/publish`, { groupId: 1, message: '123' });
-
-        expect(publishMessageResp.status).toBe(204)
-
-        const publishedTimes = await waitEventsPromise;
-
-        expect(publishedTimes).toBe(publishTimes)
-
-        await closeCentrifugoConnection(connection);
+        await publishAndTrackEvents(userId, publishTimes, publishFn)
     })
 })
 

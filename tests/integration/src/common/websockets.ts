@@ -1,11 +1,12 @@
-import jwt from "jsonwebtoken";
-import {API_BASE, CENTRIFUGO_HMAC_SECRET, CENTRIFUGO_URL} from "./environment";
 import Centrifuge from "centrifuge";
+import {AxiosResponse} from "axios";
+import _ from "lodash";
+import jwt from "jsonwebtoken";
+import {CENTRIFUGO_HMAC_SECRET, CENTRIFUGO_URL} from "./environment";
 import WebSocket from "ws";
-import axios, {AxiosResponse} from "axios";
 
-export const connectToCentrifugo = async (userId: number): Promise<Centrifuge> => {
-    const token = jwt.sign({ sub: userId.toString() }, CENTRIFUGO_HMAC_SECRET);
+export const connect = async (userId: number): Promise<Centrifuge> => {
+    const token = jwt.sign({sub: userId.toString()}, CENTRIFUGO_HMAC_SECRET);
 
     const connection = new Centrifuge(CENTRIFUGO_URL, {
         debug: false,
@@ -27,15 +28,17 @@ export const connectToCentrifugo = async (userId: number): Promise<Centrifuge> =
     })
 }
 
-export const waitEvents = async (connection: Centrifuge, times: number): Promise<number> => {
+const waitEvents = async (connection: Centrifuge, times: number): Promise<unknown[]> => {
 
     let counter = 0;
+    const receivedObjects: unknown[] = [];
 
     return new Promise(function (fulfilled, rejected) {
-        connection.on('publish', () => {
+        connection.on('publish', (eventData) => {
+            receivedObjects.push(eventData);
             counter++;
             if(counter === times){
-                fulfilled(counter);
+                fulfilled(receivedObjects);
             }
         })
 
@@ -45,7 +48,7 @@ export const waitEvents = async (connection: Centrifuge, times: number): Promise
     })
 }
 
-export const waitForDisconnect = async (connection: Centrifuge): Promise<void> => {
+const waitForDisconnect = async (connection: Centrifuge): Promise<void> => {
     return new Promise(function (fulfilled, rejected) {
         connection.on('disconnect', () => {
             fulfilled();
@@ -53,7 +56,7 @@ export const waitForDisconnect = async (connection: Centrifuge): Promise<void> =
     })
 }
 
-export const closeCentrifugoConnection = async (connection: Centrifuge): Promise<void> => {
+const closeConnection = async (connection: Centrifuge): Promise<void> => {
     const disconnectPromise = waitForDisconnect(connection);
 
     connection.disconnect();
@@ -61,22 +64,31 @@ export const closeCentrifugoConnection = async (connection: Centrifuge): Promise
     await disconnectPromise;
 }
 
-export const publishAndTrackEvents = async (userId: number, publishFn : () => Promise<AxiosResponse<void>>): Promise<void> => {
-    const connection = await connectToCentrifugo(userId);
+export const publishAndTrackEvents = async (userId: number,
+                                            publishTimes: number,
+                                            publishFn : (data: number) => Promise<AxiosResponse<void>>): Promise<void> => {
 
-    const publishTimes = 1;
+    const connection = await connect(userId);
 
     const waitEventsPromise = waitEvents(connection, publishTimes)
 
-    const publishMessageResp = await publishFn;
+    const publishedMessages: number[] = [];
 
-    expect(publishMessageResp.status).toBe(204)
+    for (let i = 0; i < publishTimes; i++){
+        publishedMessages.push(i);
 
-    const publishedTimes = await waitEventsPromise;
+        const publishMessageResp = await publishFn(i);
 
-    expect(publishedTimes).toBe(publishTimes)
+        expect(publishMessageResp.status).toBe(204)
+    }
 
-    await closeCentrifugoConnection(connection);
+    const receivedMessages = await waitEventsPromise;
+
+    const messagesAreEqual = _.isEqual(publishedMessages.sort(), receivedMessages.sort());
+
+    expect(messagesAreEqual).toBe(true)
+
+    await closeConnection(connection);
 }
 
 
