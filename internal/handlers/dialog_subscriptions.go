@@ -94,7 +94,7 @@ func (h *DialogSubscriptions) ClearByInitiatorId(c *fiber.Ctx) error {
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/groups/publish [post]
+// @Router       /api/dialog-subscriptions/publish [post]
 func (h *DialogSubscriptions) Publish(c *fiber.Ctx) error {
 	form := forms.PublishMessageToInterlocutors{}
 

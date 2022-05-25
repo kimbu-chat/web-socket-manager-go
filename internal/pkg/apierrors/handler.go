@@ -2,6 +2,7 @@ package apierrors
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/go-playground/validator/v10"
@@ -21,7 +22,27 @@ func ErrorHandler(c *fiber.Ctx, err error) error {
 	}
 }
 
+// ParamsInt64 is used to get an integer from the route parameters
+// it defaults to zero if the parameter is not found or if the
+// parameter cannot be converted to an integer
+// If a default value is given, it will return that value in case the param
+// doesn't exist or cannot be converted to an integrer
+func ParamsInt64(c *fiber.Ctx, key string, defaultValue ...int64) (int64, error) {
+	// Use Atoi to convert the param to an int or return zero and an error
+	value, err := strconv.ParseInt(c.Params(key), 10, 64)
+	if err != nil {
+		if len(defaultValue) > 0 {
+			return defaultValue[0], nil
+		} else {
+			return 0, err
+		}
+	}
+
+	return value, nil
+}
+
 func ParseValidate(c *fiber.Ctx, form any) (err error) {
+
 	err = c.BodyParser(form)
 	if err != nil {
 		return &ErrBadRequest

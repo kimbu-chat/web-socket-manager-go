@@ -23,19 +23,23 @@ func (r *DialogSubscriptionsRepository) CreateList(initiatorId int64, userIds []
 		subscriptions[i] = models.DialogSubscription{InitiatorId: initiatorId, UserId: userId}
 	}
 
-	return r.db.CreateInBatches(subscriptions, batchSize).Error
+	return r.getTable().CreateInBatches(subscriptions, batchSize).Error
 }
 
 func (r *DialogSubscriptionsRepository) RemoveList(initiatorId int64, userIds []int64) error {
-	return r.db.Where("initiator_id = ? AND user_id = ANY(?)", initiatorId, userIds).Delete([]models.DialogSubscription{}).Error
+	return r.getTable().Where("initiator_id = ? AND user_id = ANY(?)", initiatorId, userIds).Delete([]models.DialogSubscription{}).Error
 }
 
 func (r *DialogSubscriptionsRepository) GetUserIdsByInitiatorId(initiatorId int64) ([]int64, error) {
 	var userIds []int64
-	err := r.db.Table("dialog_subscriptions").Select("user_id").Where("initiator_id = ?", initiatorId).Find(&userIds).Error
+	err := r.getTable().Select("user_id").Where("initiator_id = ?", initiatorId).Find(&userIds).Error
 	return userIds, err
 }
 
 func (r *DialogSubscriptionsRepository) ClearSubscriptionsByInitiatorId(initiatorId int64) error {
-	return r.db.Where("initiator_id = ?", initiatorId).Delete([]models.DialogSubscription{}).Error
+	return r.getTable().Where("initiator_id = ?", initiatorId).Delete([]models.DialogSubscription{}).Error
+}
+
+func (r *DialogSubscriptionsRepository) getTable() (tx *gorm.DB) {
+	return r.db.Table((&models.DialogSubscription{}).TableName())
 }

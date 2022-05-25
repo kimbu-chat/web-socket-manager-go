@@ -8,3 +8,7 @@ type GroupSubscription struct {
 
 	CreatedAt time.Time
 }
+
+func (r *GroupSubscription) TableName() string {
+	return "group_subscriptions"
+}
