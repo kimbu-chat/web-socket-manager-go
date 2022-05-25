@@ -1,4 +1,4 @@
-import {DB_PORT} from "./environment";
+import {DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER} from "./environment";
 
 const cleaner = require('postgres-cleaner')
 import {Client} from "pg";
@@ -9,11 +9,11 @@ const options = {
 }
 
 const cn = {
-    host: 'localhost',
+    host: DB_HOST,
     port: +DB_PORT,
-    user: 'postgres',
-    password: 'postgres',
-    database: 'websocketmanager'
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_NAME
 };
 
 export default async () : Promise<void> => {

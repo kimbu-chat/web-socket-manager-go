@@ -2,7 +2,7 @@ import Centrifuge, {PublicationContext} from "centrifuge";
 import {AxiosResponse} from "axios";
 import _ from "lodash";
 import jwt from "jsonwebtoken";
-import {CENTRIFUGO_HMAC_SECRET, CENTRIFUGO_URL} from "./environment";
+import {CENTRIFUGO_HMAC_SECRET, CENTRIFUGO_URL, CENTRIFUGO_WAIT_EVENTS_TIMEOUT} from "./environment";
 import WebSocket from "ws";
 
 export const connect = async (userId: number): Promise<Centrifuge> => {
@@ -80,7 +80,7 @@ const closeConnection = async (connection: Centrifuge): Promise<void> => {
 export const publishAndTrackEvents = async (userId: number,
                                             publishTimes: number,
                                             publishFn : (data: number) => Promise<AxiosResponse<void>>,
-                                            timeout: number = 3000): Promise<void> => {
+                                            timeout: number = CENTRIFUGO_WAIT_EVENTS_TIMEOUT): Promise<void> => {
 
     const connection = await connect(userId);
 
