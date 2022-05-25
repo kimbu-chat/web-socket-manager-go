@@ -1,20 +1,20 @@
 version: "3.9"
 services:
-#  websocket-manager:
-#    build: .
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - postgres
-#      - centrifugo
-#    environment:
-#      - ENV=production
-#      - VERSION
-#      - DB_HOST=postgres
-#      - DB_PORT=5432
-#      - CENTRIFUGO_GRPC_ADDRESS=centrifugo:10000
-#      - CENTRIFUGO_API_KEY=f87b94fa-1858-4026-829b-b6b18e0673e4
-#    env_file: .env
+  websocket-manager:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - centrifugo
+    environment:
+      - ENV=production
+      - VERSION
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - CENTRIFUGO_GRPC_ADDRESS=centrifugo:10000
+      - CENTRIFUGO_API_KEY=f87b94fa-1858-4026-829b-b6b18e0673e4
+    env_file: .env
   postgres:
     image: postgres:14.2
     restart: always
