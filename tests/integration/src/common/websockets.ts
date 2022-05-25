@@ -1,4 +1,4 @@
-import Centrifuge from "centrifuge";
+import Centrifuge, {PublicationContext} from "centrifuge";
 import {AxiosResponse} from "axios";
 import _ from "lodash";
 import jwt from "jsonwebtoken";
@@ -28,21 +28,34 @@ export const connect = async (userId: number): Promise<Centrifuge> => {
     })
 }
 
-const waitEvents = async (connection: Centrifuge, times: number): Promise<unknown[]> => {
+const waitEvents = async (connection: Centrifuge, times: number, timeout: number): Promise<unknown[]> => {
 
     let counter = 0;
     const receivedObjects: unknown[] = [];
+    let timeoutId: NodeJS.Timeout;
 
     return new Promise(function (fulfilled, rejected) {
-        connection.on('publish', (eventData) => {
-            receivedObjects.push(eventData);
+
+        timeoutId = setTimeout(() => {
+            if(times === 0){
+                fulfilled([])
+            } else {
+                rejected();
+            }
+        }, timeout);
+
+
+        connection.on('publish', (eventData: PublicationContext) => {
+            receivedObjects.push(eventData.data);
             counter++;
             if(counter === times){
+                clearTimeout(timeoutId);
                 fulfilled(receivedObjects);
             }
         })
 
         connection.on('disconnect', () => {
+            clearTimeout(timeoutId);
             rejected();
         });
     })
@@ -66,11 +79,12 @@ const closeConnection = async (connection: Centrifuge): Promise<void> => {
 
 export const publishAndTrackEvents = async (userId: number,
                                             publishTimes: number,
-                                            publishFn : (data: number) => Promise<AxiosResponse<void>>): Promise<void> => {
+                                            publishFn : (data: number) => Promise<AxiosResponse<void>>,
+                                            timeout: number = 3000): Promise<void> => {
 
     const connection = await connect(userId);
 
-    const waitEventsPromise = waitEvents(connection, publishTimes)
+    const waitEventsPromise = waitEvents(connection, publishTimes, timeout)
 
     const publishedMessages: number[] = [];
 

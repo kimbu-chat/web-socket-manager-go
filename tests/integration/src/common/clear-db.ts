@@ -1,13 +1,11 @@
 import {DB_PORT} from "./environment";
 
 const cleaner = require('postgres-cleaner')
-const pgp = require('pg-promise')({
-    // Initialization Options
-})
+import {Client} from "pg";
 
 const options = {
     type: 'truncate',
-    skipTables: ['SequelizeMeta'],
+    skipTables: ['gorp_migrations']
 }
 
 const cn = {
@@ -15,10 +13,20 @@ const cn = {
     port: +DB_PORT,
     user: 'postgres',
     password: 'postgres',
+    database: 'websocketmanager'
 };
 
-export default (): Promise<void> => {
-    const db = pgp(cn)
+export default async () : Promise<void> => {
 
-    return cleaner(options, db);
+    const client = new Client(cn);
+
+    try {
+        await client.connect();
+        await cleaner(options, client);
+    } finally {
+        // https://github.com/brianc/node-postgres/issues/2648
+        if (client) {
+            await client.end();
+        }
+    }
 }

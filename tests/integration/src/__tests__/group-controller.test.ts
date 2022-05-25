@@ -6,27 +6,31 @@ import _ from "lodash";
 
 describe("groups controller", () => {
     test("events aren't received after subscription deletion", async () => {
-        const userId = 1;
+        const userId = _.random(1, 100_000);
+        const groupId = _.random(1, 100_000);
 
-        const clearResponse = await axios.post(`${API_BASE}/api/groups/subscriptions/clear-by-user-id`, { userId });
+        const createSubscriptionResp = await axios.post(API.GROUP_SUBSCRIPTIONS.CREATE, { userIds: [userId], groupId: groupId });
+
+        expect(createSubscriptionResp.status).toBe(204);
+
+        const clearResponse = await axios.delete(API.GROUP_SUBSCRIPTIONS.CLEAR_BY_USER_ID(userId));
 
         expect(clearResponse.status).toBe(204);
 
-        const response = await axios.post(`${API_BASE}/api/groups/subscriptions`, { userIds: [userId], groupId: 1 });
+        const publishFn = (index: number) => axios.post(API.GROUP_SUBSCRIPTIONS.PUBLISH, { groupId: groupId, message: index });
 
-        expect(response.status).toBe(204);
+        const publishTimes = 0;
+
+        await publishAndTrackEvents(userId, publishTimes, publishFn)
     })
 
     test("throws error if try to add two the same subscriptions", async () => {
-        const userId = 1;
+        const userId = _.random(1, 100_000);
+        const groupId = _.random(1, 100_000);
 
-        const clearResponse = await axios.post(`${API_BASE}/api/groups/subscriptions/clear-by-user-id`, { userId });
+        const request = { userIds: [userId], groupId: groupId };
 
-        expect(clearResponse.status).toBe(204);
-
-        const request = { userIds: [userId], groupId: 1 };
-
-        const addSubscriptionFn = () => axios.post(API.GROUPS.CREATE_GROUP_SUBSCRIPTIONS, request);
+        const addSubscriptionFn = () => axios.post(API.GROUP_SUBSCRIPTIONS.CREATE, request);
 
         const addSubscriptionResp = await addSubscriptionFn();
 
@@ -40,13 +44,15 @@ describe("groups controller", () => {
     test("publish message to group successfully", async () => {
         const publishTimes = _.random(20, 100);
 
-        const userId = _.random(20, 100_000);
+        const userId = _.random(1, 100_000);
 
-        const createSubscriptionsResp = await axios.post(API.GROUPS.CREATE_GROUP_SUBSCRIPTIONS, { userIds: [userId], groupId: 1 });
+        const groupId = _.random(1, 100_000);
+
+        const createSubscriptionsResp = await axios.post(API.GROUP_SUBSCRIPTIONS.CREATE, { userIds: [userId], groupId: groupId });
 
         expect(createSubscriptionsResp.status).toBe(204)
 
-        const publishFn = (index: number) => axios.post(API.GROUPS.PUBLISH_TO_GROUP, { groupId: 1, message: index });
+        const publishFn = (index: number) => axios.post(API.GROUP_SUBSCRIPTIONS.PUBLISH, { groupId: groupId, message: index });
 
         await publishAndTrackEvents(userId, publishTimes, publishFn)
     })

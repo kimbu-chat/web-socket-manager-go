@@ -1,12 +1,5 @@
 import clearDb from "./common/clear-db";
 
-beforeEach(() => {
-    console.log('beforex')
-    // beforeEach(clearDb)
-})
-
-afterEach(() => {
-    console.log('after each')
-})
+beforeEach(async () => await clearDb())
 
 export {}

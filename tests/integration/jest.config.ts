@@ -5,7 +5,7 @@ const config: Config.InitialOptions = {
   testEnvironment: "node",
   verbose: true,
   automock: false,
-  testTimeout: 10000,
+  testTimeout: 100000,
   setupFiles: [
     'dotenv/config'
   ],
