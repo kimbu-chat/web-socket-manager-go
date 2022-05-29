@@ -117,7 +117,7 @@ const docTemplate = `{
                 "tags": [
                     "ChannelSubscriptions"
                 ],
-                "summary": "ClearByInitiatorId channel subscriptions by channel id",
+                "summary": "Clear channel subscriptions by channel id",
                 "parameters": [
                     {
                         "description": "ClearChannelSubscriptionsByChannelId",
@@ -162,7 +162,7 @@ const docTemplate = `{
                 "tags": [
                     "ChannelSubscriptions"
                 ],
-                "summary": "ClearByInitiatorId channel subscriptions by user id",
+                "summary": "Clear channel subscriptions by user id",
                 "parameters": [
                     {
                         "description": "ClearChannelSubscriptionsByUserId",
