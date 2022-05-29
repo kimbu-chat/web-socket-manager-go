@@ -42,7 +42,6 @@ func ParamsInt64(c *fiber.Ctx, key string, defaultValue ...int64) (int64, error)
 }
 
 func ParseValidate(c *fiber.Ctx, form any) (err error) {
-
 	err = c.BodyParser(form)
 	if err != nil {
 		return &ErrBadRequest

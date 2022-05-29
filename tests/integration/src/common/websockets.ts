@@ -98,9 +98,7 @@ export const publishAndTrackEvents = async (userId: number,
 
     const receivedMessages = await waitEventsPromise;
 
-    const messagesAreEqual = _.isEqual(publishedMessages.sort(), receivedMessages.sort());
-
-    expect(messagesAreEqual).toBe(true)
+    expect(publishedMessages.sort()).toEqual(receivedMessages.sort())
 
     await closeConnection(connection);
 }

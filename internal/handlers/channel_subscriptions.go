@@ -62,7 +62,7 @@ func (h *ChannelSubscriptions) RemoveList(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
-// @Summary      ClearByInitiatorId channel subscriptions by channel id
+// @Summary      Clear channel subscriptions by channel id
 // @Tags         ChannelSubscriptions
 // @Accept       json
 // @Produce      json
@@ -85,7 +85,7 @@ func (h *ChannelSubscriptions) ClearByChannelId(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
-// @Summary      ClearByInitiatorId channel subscriptions by user id
+// @Summary      Clear channel subscriptions by user id
 // @Tags         ChannelSubscriptions
 // @Accept       json
 // @Produce      json
