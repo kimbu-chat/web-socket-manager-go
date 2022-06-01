@@ -16,6 +16,7 @@ func NewMessageToUsers() *MessageToUsers {
 }
 
 // @Summary      Publish message to users
+// @Tags         Users
 // @Accept       json
 // @Produce      json
 // @Param        message  body      forms.PublishMessageToUsers  true "PublishMessageToUsers"

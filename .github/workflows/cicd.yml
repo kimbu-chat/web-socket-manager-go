@@ -1,0 +1,32 @@
+name: cicd
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build-run-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start containers
+        run: |
+          cp .env.sample .env
+          docker-compose -f "docker-compose.yml" up -d --build
+
+      - name: Install dependencies
+        working-directory: ./tests/integration
+        run: npm install
+
+      - name: Run tests
+        working-directory: ./tests/integration
+        run: |
+          cp .env.sample .env
+          yarn test
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down

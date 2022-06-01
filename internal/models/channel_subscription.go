@@ -8,3 +8,7 @@ type ChannelSubscription struct {
 
 	CreatedAt time.Time
 }
+
+func (r *ChannelSubscription) TableName() string {
+	return "channel_subscriptions"
+}

@@ -16,11 +16,11 @@ func NewDialogSubscriptions() *DialogSubscriptions {
 	return &DialogSubscriptions{services.NewDialogSubscriptions()}
 }
 
-// @Summary      Clear dialog subscriptions
+// @Summary      Create dialog subscriptions
 // @Tags         DialogSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearDialogSubscriptions  true "CreateDialogSubscriptions"
+// @Param        message  body      forms.CreateDialogSubscriptions  true "CreateDialogSubscriptions"
 // @Success      204      {object}  nil                                        "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
@@ -62,7 +62,7 @@ func (h *DialogSubscriptions) RemoveList(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
-// @Summary      Clear all dialog subscriptions for specific user
+// @Summary      ClearByInitiatorId all dialog subscriptions for specific user
 // @Tags         DialogSubscriptions
 // @Accept       json
 // @Produce      json
@@ -72,13 +72,37 @@ func (h *DialogSubscriptions) RemoveList(c *fiber.Ctx) error {
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/dialogs/subscriptions/clear [post]
-func (h *DialogSubscriptions) Clear(c *fiber.Ctx) error {
+func (h *DialogSubscriptions) ClearByInitiatorId(c *fiber.Ctx) error {
 	form := forms.ClearDialogSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
 		return err
 	}
 
 	if err := h.service.Clear(form.InitiatorId); err != nil {
+		return apierrors.NewPrivate(err)
+	}
+
+	return c.SendStatus(fiber.StatusNoContent)
+}
+
+// @Summary      Publish message to interlocutors
+// @Tags         DialogSubscriptions
+// @Accept       json
+// @Produce      json
+// @Param        message  body      forms.PublishMessageToInterlocutors  true "PublishMessageToInterlocutorsRequest"
+// @Success      204      {object}  nil                               "Success"
+// @Failure      400      {object}  apierrors.PublicErrorResponse
+// @Failure      422      {object}  apierrors.ValidationErrorsResponse
+// @Failure      500
+// @Router       /api/dialog-subscriptions/publish [post]
+func (h *DialogSubscriptions) Publish(c *fiber.Ctx) error {
+	form := forms.PublishMessageToInterlocutors{}
+
+	if err := apierrors.ParseValidate(c, &form); err != nil {
+		return err
+	}
+
+	if err := h.service.Publish(form.InitiatorId, form.Message); err != nil {
 		return apierrors.NewPrivate(err)
 	}
 

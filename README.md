@@ -58,7 +58,7 @@ golangci-lint run
 
 After API changes call swag to regenerate documentation
 
-At first you need to download swag tool (v1.8.1) <https://github.com/swaggo/swag#getting-started>
+At first, you need to download swag tool (v1.8.1) <https://github.com/swaggo/swag#getting-started>
 
 Regenerate documentation
 

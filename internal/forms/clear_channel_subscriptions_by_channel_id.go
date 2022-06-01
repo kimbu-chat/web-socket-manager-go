@@ -1,5 +1,5 @@
 package forms
 
-type ClearChannelSubscriptions struct {
+type ClearChannelSubscriptionsByChannelId struct {
 	ChannelId int64 `json:"channelId" validate:"required"`
 }

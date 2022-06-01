@@ -8,3 +8,7 @@ type DialogSubscription struct {
 
 	CreatedAt time.Time
 }
+
+func (r *DialogSubscription) TableName() string {
+	return "dialog_subscriptions"
+}

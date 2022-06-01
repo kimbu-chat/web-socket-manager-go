@@ -20,6 +20,20 @@ func (h *GroupSubscriptions) RemoveList(groupId int64, userIds []int64) error {
 	return h.repo.RemoveList(groupId, userIds)
 }
 
-func (h *GroupSubscriptions) Clear(groupId int64) error {
+func (h *GroupSubscriptions) ClearByGroupId(groupId int64) error {
 	return h.repo.ClearSubscriptionsByGroupId(groupId)
+}
+
+func (h *GroupSubscriptions) ClearByUserId(userId int64) error {
+	return h.repo.ClearSubscriptionsByUserId(userId)
+}
+
+func (h *GroupSubscriptions) Publish(groupId int64, data []byte) error {
+	userIds, err := h.repo.GetUserIdsByGroupId(groupId)
+
+	if err != nil {
+		return err
+	}
+
+	return BroadcastData(userIds, data)
 }

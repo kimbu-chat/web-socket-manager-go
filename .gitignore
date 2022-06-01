@@ -3,3 +3,5 @@
 .env
 .vscode
 node_modules
+.yarn-error.log
+/cmd/websocketmanager/__debug_bin

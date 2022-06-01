@@ -41,19 +41,23 @@ func InitApp() *fiber.App {
 	{
 		apiGroup.Post("/users/publish", handlers.NewMessageToUsers().Publish)
 
-		apiGroup.Post("/groups/publish", handlers.NewMessageToGroup().Publish)
-		apiGroup.Post("/groups/subscriptions", handlers.NewGroupSubscriptions().CreateList)
-		apiGroup.Post("/groups/subscriptions/remove", handlers.NewGroupSubscriptions().RemoveList)
-		apiGroup.Post("/groups/subscriptions/clear", handlers.NewGroupSubscriptions().Clear)
+		apiGroup.Post("/group-subscriptions/publish", handlers.NewGroupSubscriptions().Publish)
+		apiGroup.Post("/group-subscriptions", handlers.NewGroupSubscriptions().CreateList)
+		apiGroup.Post("/group-subscriptions/batch-remove", handlers.NewGroupSubscriptions().RemoveList)
+		apiGroup.Delete("/group-subscriptions/groups/:groupId", handlers.NewGroupSubscriptions().ClearByGroupId)
+		apiGroup.Delete("/users/:userId/group-subscriptions", handlers.NewGroupSubscriptions().ClearByUserId)
 
-		apiGroup.Post("/channels/publish", handlers.NewMessageToChannel().Publish)
-		apiGroup.Post("/channels/subscriptions", handlers.NewChannelSubscriptions().CreateList)
-		apiGroup.Post("/channels/subscriptions/remove", handlers.NewChannelSubscriptions().RemoveList)
-		apiGroup.Post("/channels/subscriptions/clear", handlers.NewChannelSubscriptions().Clear)
+		apiGroup.Post("/channel-subscriptions/publish", handlers.NewChannelSubscriptions().Publish)
+		apiGroup.Post("/channel-subscriptions", handlers.NewChannelSubscriptions().CreateList)
+		apiGroup.Post("/channel-subscriptions/batch-remove", handlers.NewChannelSubscriptions().RemoveList)
+		apiGroup.Delete("/channel-subscriptions/channels/:channelId", handlers.NewChannelSubscriptions().ClearByChannelId)
+		apiGroup.Delete("/users/:userId/channel-subscriptions", handlers.NewChannelSubscriptions().ClearByUserId)
 
-		apiGroup.Post("/dialogs/subscriptions", handlers.NewDialogSubscriptions().CreateList)
-		apiGroup.Post("/dialogs/subscriptions/remove", handlers.NewDialogSubscriptions().RemoveList)
-		apiGroup.Post("/dialogs/subscriptions/clear", handlers.NewDialogSubscriptions().Clear)
+		apiGroup.Post("/dialog-subscriptions/publish", handlers.NewDialogSubscriptions().Publish)
+		apiGroup.Post("/dialog-subscriptions", handlers.NewDialogSubscriptions().CreateList)
+		apiGroup.Post("/dialog-subscriptions/batch-remove", handlers.NewDialogSubscriptions().RemoveList)
+		apiGroup.Delete("/users/:initiatorId/dialog-subscriptions", handlers.NewDialogSubscriptions().ClearByInitiatorId)
+
 	}
 
 	return app

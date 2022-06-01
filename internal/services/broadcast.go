@@ -12,8 +12,10 @@ import (
 func BroadcastData(userIds []int64, data []byte) error {
 	client := config.GetGRPCClient()
 
+	channels := convertIntArrayToChannels(userIds)
+
 	request := apiproto.BroadcastRequest{
-		Channels: convertIntArrayToChannels(userIds),
+		Channels: channels,
 		Data:     data,
 	}
 

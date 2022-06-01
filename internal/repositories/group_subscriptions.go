@@ -23,19 +23,27 @@ func (r *GroupSubscriptionsRepository) CreateListByGroupId(groupId int64, userId
 		subscriptions[i] = models.GroupSubscription{UserId: userId, GroupId: groupId}
 	}
 
-	return r.db.CreateInBatches(subscriptions, batchSize).Error
+	return r.getTable().CreateInBatches(subscriptions, batchSize).Error
 }
 
 func (r *GroupSubscriptionsRepository) RemoveList(groupId int64, userIds []int64) error {
-	return r.db.Where("group_id = ? AND user_id = ANY(?)", groupId, userIds).Delete([]models.GroupSubscription{}).Error
+	return r.getTable().Where("group_id = ? AND user_id = ANY(?)", groupId, userIds).Delete([]models.GroupSubscription{}).Error
 }
 
 func (r *GroupSubscriptionsRepository) GetUserIdsByGroupId(groupId int64) ([]int64, error) {
 	var userIds []int64
-	err := r.db.Select("user_id").Where("group_id = ?", groupId).Find(&userIds).Error
+	err := r.getTable().Select("user_id").Where("group_id = ?", groupId).Find(&userIds).Error
 	return userIds, err
 }
 
 func (r *GroupSubscriptionsRepository) ClearSubscriptionsByGroupId(groupId int64) error {
-	return r.db.Where("group_id = ?", groupId).Delete([]models.GroupSubscription{}).Error
+	return r.getTable().Where("group_id = ?", groupId).Delete([]models.GroupSubscription{}).Error
+}
+
+func (r *GroupSubscriptionsRepository) ClearSubscriptionsByUserId(userId int64) error {
+	return r.getTable().Where("user_id = ?", userId).Delete([]models.GroupSubscription{}).Error
+}
+
+func (r *GroupSubscriptionsRepository) getTable() (tx *gorm.DB) {
+	return r.db.Table((&models.GroupSubscription{}).TableName())
 }
