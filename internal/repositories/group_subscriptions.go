@@ -1,9 +1,10 @@
 package repositories
 
 import (
+	"gorm.io/gorm"
+
 	"github.com/kimbu-chat/web-socket-manager-go/internal/config/db"
 	"github.com/kimbu-chat/web-socket-manager-go/internal/models"
-	"gorm.io/gorm"
 )
 
 type GroupSubscriptionsRepository struct {
