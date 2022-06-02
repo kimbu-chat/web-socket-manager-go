@@ -15,6 +15,14 @@ export const getError = async <TError>(call: () => unknown): Promise<TError> => 
 
 export const getRandomId = () => _.random(1, 100_000);
 
+export const createChannelSubscriptions = (userIds: number[], channelId: number) => {
+    return axios.post(API.CHANNEL_SUBSCRIPTIONS.CREATE, { userIds: userIds, channelId: channelId });
+}
+
+export const publishToChannel = (channelId: number, message: any) => {
+    return axios.post(API.CHANNEL_SUBSCRIPTIONS.PUBLISH, { channelId: channelId, message: message });
+}
+
 export const createGroupSubscriptions = (userIds: number[], groupId: number) => {
     return axios.post(API.GROUP_SUBSCRIPTIONS.CREATE, { userIds: userIds, groupId: groupId });
 }

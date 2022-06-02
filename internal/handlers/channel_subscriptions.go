@@ -25,7 +25,7 @@ func NewChannelSubscriptions() *ChannelSubscriptions {
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/channels/subscriptions [post]
+// @Router       /api/channel-subscriptions [post]
 func (h *ChannelSubscriptions) CreateList(c *fiber.Ctx) error {
 	form := forms.CreateChannelSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
@@ -48,7 +48,7 @@ func (h *ChannelSubscriptions) CreateList(c *fiber.Ctx) error {
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/channels/subscriptions/remove [post]
+// @Router       /api/channel-subscriptions/batch-remove [post]
 func (h *ChannelSubscriptions) RemoveList(c *fiber.Ctx) error {
 	form := forms.RemoveChannelSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
@@ -66,19 +66,20 @@ func (h *ChannelSubscriptions) RemoveList(c *fiber.Ctx) error {
 // @Tags         ChannelSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearChannelSubscriptionsByChannelId  true  "ClearChannelSubscriptionsByChannelId"
+// @Param        groupId   path int64 true "Channel id"
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/channels/subscriptions/clear-by-channel-id [post]
+// @Router       /api/channel-subscriptions/channels/:channelId [delete]
 func (h *ChannelSubscriptions) ClearByChannelId(c *fiber.Ctx) error {
-	form := forms.ClearChannelSubscriptionsByChannelId{}
-	if err := apierrors.ParseValidate(c, &form); err != nil {
+	groupId, err := apierrors.ParamsInt64(c, "channelId")
+
+	if err != nil {
 		return err
 	}
 
-	if err := h.service.ClearByChannelId(form.ChannelId); err != nil {
+	if err := h.service.ClearByChannelId(groupId); err != nil {
 		return apierrors.NewPrivate(err)
 	}
 
@@ -89,19 +90,20 @@ func (h *ChannelSubscriptions) ClearByChannelId(c *fiber.Ctx) error {
 // @Tags         ChannelSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearChannelSubscriptionsByUserId  true  "ClearChannelSubscriptionsByUserId"
+// @Param        userId   path int64 true "User id"
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/channels/subscriptions/clear-by-user-id [post]
+// @Router       /api/users/:userId/channel-subscriptions [delete]
 func (h *ChannelSubscriptions) ClearByUserId(c *fiber.Ctx) error {
-	form := forms.ClearChannelSubscriptionsByUserId{}
-	if err := apierrors.ParseValidate(c, &form); err != nil {
+	userId, err := apierrors.ParamsInt64(c, "userId")
+
+	if err != nil {
 		return err
 	}
 
-	if err := h.service.ClearByUserId(form.UserId); err != nil {
+	if err := h.service.ClearByUserId(userId); err != nil {
 		return apierrors.NewPrivate(err)
 	}
 
