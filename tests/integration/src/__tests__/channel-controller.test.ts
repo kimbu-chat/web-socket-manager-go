@@ -1,12 +1,10 @@
 import axios, {AxiosError} from "axios";
-import {API_BASE, CENTRIFUGO_URL, CENTRIFUGO_HMAC_SECRET, API} from "../common/environment";
+import {API} from "../common/environment";
 import {publishAndTrackEvents} from "../common/websockets";
 import {
     createChannelSubscriptions,
-    createGroupSubscriptions,
     getError,
     getRandomId, publishToChannel,
-    publishToGroup
 } from "../common/utils";
 import _ from "lodash";
 

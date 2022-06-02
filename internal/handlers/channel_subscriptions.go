@@ -66,20 +66,20 @@ func (h *ChannelSubscriptions) RemoveList(c *fiber.Ctx) error {
 // @Tags         ChannelSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        groupId   path int64 true "Channel id"
+// @Param        channelId   path int64 true "Channel id"
 // @Success      204      {object}  nil                               "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
 // @Router       /api/channel-subscriptions/channels/:channelId [delete]
 func (h *ChannelSubscriptions) ClearByChannelId(c *fiber.Ctx) error {
-	groupId, err := apierrors.ParamsInt64(c, "channelId")
+	channelId, err := apierrors.ParamsInt64(c, "channelId")
 
 	if err != nil {
 		return err
 	}
 
-	if err := h.service.ClearByChannelId(groupId); err != nil {
+	if err := h.service.ClearByChannelId(channelId); err != nil {
 		return apierrors.NewPrivate(err)
 	}
 

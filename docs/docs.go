@@ -122,7 +122,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Channel id",
-                        "name": "groupId",
+                        "name": "channelId",
                         "in": "path",
                         "required": true
                     }
