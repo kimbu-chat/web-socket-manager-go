@@ -239,7 +239,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/dialogs/subscriptions": {
+        "/api/dialogs-subscriptions": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -284,52 +284,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/dialogs/subscriptions/clear": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "DialogSubscriptions"
-                ],
-                "summary": "ClearByInitiatorId all dialog subscriptions for specific user",
-                "parameters": [
-                    {
-                        "description": "ClearDialogSubscriptions",
-                        "name": "message",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/forms.ClearDialogSubscriptions"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Success"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "schema": {
-                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
-                        }
-                    },
-                    "500": {
-                        "description": ""
-                    }
-                }
-            }
-        },
-        "/api/dialogs/subscriptions/remove": {
+        "/api/dialogs-subscriptions/batch-remove": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -552,6 +507,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/users/:initiatorId/dialog-subscriptions": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DialogSubscriptions"
+                ],
+                "summary": "Clear all dialog subscriptions by initiatorId",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Initiator id",
+                        "name": "initiatorId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.PublicErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/apierrors.ValidationErrorsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/users/:userId/channel-subscriptions": {
             "delete": {
                 "consumes": [
@@ -712,17 +710,6 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/apierrors.ValidationErrorResponse"
                     }
-                }
-            }
-        },
-        "forms.ClearDialogSubscriptions": {
-            "type": "object",
-            "required": [
-                "initiatorId"
-            ],
-            "properties": {
-                "initiatorId": {
-                    "type": "integer"
                 }
             }
         },
