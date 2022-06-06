@@ -2,7 +2,6 @@ import {
     publishAndTrackEvents,
 } from "../common/websockets";
 import _ from "lodash";
-import clearDb from "../common/clear-db";
 import {getRandomId, publishToUsers} from "../common/utils";
 
 describe("users controller", () => {

@@ -25,7 +25,7 @@ func NewDialogSubscriptions() *DialogSubscriptions {
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/dialogs/subscriptions [post]
+// @Router       /api/dialogs-subscriptions [post]
 func (h *DialogSubscriptions) CreateList(c *fiber.Ctx) error {
 	form := forms.CreateDialogSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
@@ -48,7 +48,7 @@ func (h *DialogSubscriptions) CreateList(c *fiber.Ctx) error {
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/dialogs/subscriptions/remove [post]
+// @Router       /api/dialogs-subscriptions/batch-remove [post]
 func (h *DialogSubscriptions) RemoveList(c *fiber.Ctx) error {
 	form := forms.RemoveDialogSubscriptions{}
 	if err := apierrors.ParseValidate(c, &form); err != nil {
@@ -62,23 +62,24 @@ func (h *DialogSubscriptions) RemoveList(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
-// @Summary      ClearByInitiatorId all dialog subscriptions for specific user
+// @Summary      Clear all dialog subscriptions by initiatorId
 // @Tags         DialogSubscriptions
 // @Accept       json
 // @Produce      json
-// @Param        message  body      forms.ClearDialogSubscriptions  true       "ClearDialogSubscriptions"
+// @Param        initiatorId   path int64 true "Initiator id"
 // @Success      204      {object}  nil                                        "Success"
 // @Failure      400      {object}  apierrors.PublicErrorResponse
 // @Failure      422      {object}  apierrors.ValidationErrorsResponse
 // @Failure      500
-// @Router       /api/dialogs/subscriptions/clear [post]
+// @Router       /api/users/:initiatorId/dialog-subscriptions [delete]
 func (h *DialogSubscriptions) ClearByInitiatorId(c *fiber.Ctx) error {
-	form := forms.ClearDialogSubscriptions{}
-	if err := apierrors.ParseValidate(c, &form); err != nil {
+	initiatorId, err := apierrors.ParamsInt64(c, "initiatorId")
+
+	if err != nil {
 		return err
 	}
 
-	if err := h.service.Clear(form.InitiatorId); err != nil {
+	if err := h.service.Clear(initiatorId); err != nil {
 		return apierrors.NewPrivate(err)
 	}
 
