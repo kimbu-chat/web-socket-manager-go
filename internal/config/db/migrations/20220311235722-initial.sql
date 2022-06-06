@@ -18,10 +18,10 @@ CREATE TABLE channel_subscriptions
 
 CREATE TABLE dialog_subscriptions
 (
-    initiatorId BIGINT,
-    userId BIGINT,
+    initiator_id BIGINT,
+    user_id BIGINT,
     created_at TIMESTAMPTZ NOT NULL,
-    PRIMARY KEY(initiatorId, userId)
+    PRIMARY KEY(initiator_id, user_id)
 );
 
 -- +migrate Down
